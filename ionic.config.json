@@ -1,0 +1,7 @@
+{
+  "name": "diatrac",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

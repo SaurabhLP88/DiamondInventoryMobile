@@ -1,0 +1,28 @@
+ion-item::part(native) {
+    padding-left: 0 !important;
+  }
+
+.logo-container {display:flex; justify-content:center; align-items:center; margin-top:50px; margin-bottom:50px;}
+.logo {width:auto; max-width: 90%; height:auto; max-height: 120px;}
+.welcome-text {text-align:center;}
+.welcome-text h1 {font-size:24px; font-weight:400; color:#fff; margin-bottom:25px;}
+
+#login-container { background-color: #fff; color: #605D67; min-height: calc(100vh - 332px); border-radius: 25px 25px 0 0; }
+
+.logo-client-container {display:flex; justify-content:center; align-items:center; margin-top:30px; margin-bottom:20px;}
+.logo-client { width:auto; max-width: 90%; height:auto; max-height: 40px;  }
+.login-heading { font-size:32px; font-weight:400; color:#1E1671; margin-bottom:25px; text-align: center; }
+
+.login-content,
+.verify-content {display:flex; justify-content:center; align-items:center; height:260px;}
+.login-wrap ion-item { --background: transparent; --color: #121A2C; }
+.login-wrap ion-item ion-input { --background: transparent !important; --color: #121A2C; }
+.login-wrap ion-item ion-input .label-text { color: #121A2C; }
+.login-wrap ion-item ion-input .input-wrapper { padding: 0; }
+
+.error-text {text-align:center; display:block; margin-top:10px;}
+.footer-toolbar {--background:#fff; --border-width:0 !important; --color:#121A2C; text-align:center; padding:45px 20px !important; font-size:13px; line-height:1.4;}
+.footer-toolbar p { margin: 0; }
+.custom-link1 { color: #121A2C; font-weight: 700; transition: color 0.3s ease-in-out; text-decoration: none; }
+.custom-link1:hover { color: #1e1671; text-decoration: underline; }
+
