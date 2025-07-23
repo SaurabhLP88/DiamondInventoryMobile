@@ -1,69 +1,13 @@
-.scroll-wrapper {position:relative; border:1px solid #ccc; border-radius:15px; overflow:hidden;}
-.table-container {overflow:auto; white-space:nowrap; width:100%; display:inline-block; vertical-align:top; max-height:calc(100vh - 325px);}
-.custom-table {border-collapse:collapse; width:max-content; min-width:100%;}
-.custom-table tr {border-bottom:1px solid #f6f6f6;}
-.custom-table th, .custom-table td {padding:5px 5px; text-align:center; font-size:14px; color:#333; z-index:1;}
-.custom-table th:first-child, .custom-table td:first-child {position:sticky; left:0; background:#fff; z-index:2;}
-.custom-table th:nth-last-child(2), .custom-table td:nth-last-child(2) {position:sticky; right:28px; background:#fff; z-index:2;}
-.custom-table th:last-child, .custom-table td:last-child {position:sticky; right:-2px; background:#fff; z-index:2;}
-.scroll-arrow {z-index:3; height:100%; margin:0; color:#333; border-radius:50%; background-color:#f1f1f1; --padding-start:0; --padding-end:0; --padding-top:0; --padding-bottom:0; --ion-margin:0; width:24px; height:24px; font-size:12px; line-height:1; min-height:initial;}
-.action-icon {font-size:20px; cursor:pointer; color:#807A7A;}
-.circle-checkbox, .rounded-checkbox {--checkbox-background:#ffffff; border-radius:5px; overflow:hidden; --checkbox-background-checked:#ccc; --border-color-checked:#ccc;}
-.circle-checkbox {border:1px solid #ccc;}
-.rounded-checkbox {border:1px solid #1E1671;}
-.rounded-checkbox2 {--checkbox-background:#ffffff; --checkbox-background-checked:#1E1671; --border-radius:5px; --border-width:1px; --checkbox-size:32px; --checkmark-color:#fff; --border-color:#1E1671;}
-.rounded-radio {--checkbox-background:#ffffff; border:1px solid #1E1671; border-radius:50%; overflow:hidden; --checkbox-background-checked:#ccc; --border-color-checked:#ccc;}
-.table-header {display:flex; align-items:center; justify-content:end; background-color:#ddd; padding:5px;}
-.table-header .filter-button {--padding-start:0; --padding-end:0; --padding-top:0; --padding-bottom:0; display:flex; align-items:center; gap:6px; font-size:12px; color:#666; border-radius:10px; background-color:#ffffff; padding:5px 10px; min-height:auto;}
-.table-header .filter-button:hover {background-color:#5B53AB; color:#ffffff;}
-.table-header .filter-text {text-transform:capitalize; margin-left:5px;}
-.table-footer {display:flex; align-items:center; justify-content:end; background-color:#FAFAFA; border-top:1px solid #000; padding:10px 5px; font-size:12px; color:#000;}
-.table-footer ion-row {width:100%; justify-content:center; text-align:center;}
-.table-footer ion-col {padding:0; text-align:center; display:flex; flex-direction:column; align-items:center;}
-.table-footer span {font-weight:700; margin-top:5px;}
-ion-modal.full-modal::part(backdrop) {background:rgba(209, 213, 219); opacity:1;}
-ion-modal.full-modal {--background:#fff;}
-ion-modal.full-modal ion-content {--background:#fff;}
-ion-modal.full-modal ion-toolbar {--background:#fff; --color:#000; display:flex; justify-content:flex-end; align-items:center; margin:0 30px; width:auto; border-bottom:1px solid #ccc;}
-ion-modal.full-modal ion-toolbar ion-title {text-align:center; padding:0; font-size:16px; color:#333;}
-ion-modal.full-modal ion-toolbar ion-icon {font-size:16px; --background-color:#ffffff; padding:5px; color:#333; border:1px solid #ccc; margin-right:0px; border-radius:5px;}
-ion-list.line-separator {margin:0 30px; padding:0; background:#fff;}
-ion-list.line-separator ion-item {--background:#fff; --color:#333; --border-color:transparent; --border-width:0; padding:15px 0; --min-height:auto; --inner-padding-start:0; --inner-padding-end:0;}
-ion-list.line-separator ion-item-divider {background:none; border:none; min-height:auto; border-bottom:1px solid #ccc;}
-ion-list.line-separator ion-item.item .tabs-title {margin:0 0 10px; color:#1E1671; font-size:18px !important;}
-ion-segment.tabs-segment {background-color:#ccc; padding:10px; border-radius:10px; margin:10px 30px; width:auto;}
-ion-segment.tabs-segment ion-segment-button {background-color:transparent; color:#999; --indicator-color:transparent; border-radius:10px; overflow:hidden; padding:5px 0px; min-height:auto;}
-ion-segment.tabs-segment ion-segment-button.segment-button-checked {background-color:#ffffff; color:#1E1671;}
-ion-segment.tabs-segment ion-label {text-transform:capitalize; margin:0; width:100%;}
-ion-grid.checkbox-grid {padding:0; margin:0; width:100%;}
-ion-grid.checkbox-grid ion-row {padding:0; margin-bottom:10px;}
-ion-grid.checkbox-grid ion-row:last-child {margin-bottom:0;}
-ion-grid.checkbox-grid ion-col {padding:0; padding-right:5px;}
-ion-grid.checkbox-grid ion-col:last-child {padding-right:0;}
-ion-grid.checkbox-grid ion-item {padding:0;}
-ion-grid.checkbox-grid ion-checkbox, ion-grid.checkbox-grid ion-radio {margin-right:5px;}
-ion-grid.checkbox-grid ion-label.sc-ion-label-md-h {margin:0; font-size:14px; color:#1E1671;}
-.select-container {display:flex; flex-direction:column; align-items:start; width:100%;}
-.rounded-select, .corner-select {--background:white; border-radius:30px; --padding-start:14px; --padding-end:14px; --placeholder-color:#999; --color:#000; --width:100%; border:1px solid #ccc; font-size:16px; position:relative; overflow:hidden; display:block; --inner-padding-start:0; --inner-padding-end:0;}
-.rounded-select {border-radius:30px;}
-.corner-select {border-radius:10px;}
-ion-row.dropdown-row {align-items:center;}
-ion-row.dropdown-row .dropdown-col {display:flex; flex-direction:row; align-items:center; justify-items:center; padding:0 5px;}
-ion-row.dropdown-row .dropdown-col:first-child {padding-left:0;}
-ion-row.dropdown-row .dropdown-col:last-child {padding-right:0;}
-ion-row.dropdown-row .dropdown-label {font-size:14px; color:#1E1671; margin-right:5px;}
-ion-grid.fromTo-table {--ion-padding:0; color:#1E1671; padding:0;}
-ion-grid.fromTo-table ion-row {padding:0;}
-ion-grid.fromTo-table .table-header {font-weight:bold; background-color:transparent;}
-ion-grid.fromTo-table .row-label {font-weight:500; display:flex; align-items:center;}
-ion-grid.fromTo-table .header-label {text-align:center;}
-ion-grid.fromTo-table ion-input {border:1px solid #1E1671; border-radius:10px; background-color:#fff; padding:5px; text-align:center;}
-ion-grid.desc-table {margin:0; width:100%; padding:0; text-align:center; color:#1E1671;}
-ion-grid.desc-table ion-row {align-items:center;}
-.toggle-buttons {display:flex; gap:8px; flex-wrap:wrap;}
-.toggle-btn {--background:transparent; --color:#1E1671; --border-radius:10px; --border-width:1px; --border-color:#1E1671; --border-style:solid; font-size:13px; --padding-top:1em; --padding-start:1.2em; --padding-end:1.2em; --padding-bottom:1em; --box-shadow:none; margin:0;}
-.toggle-btn.selected {--background:#1E1671; --color:#fff;}
-ion-modal.full-modal .modal-footer {position:sticky; bottom:0; background:#fff; display:flex; justify-content:space-between; padding:12px 30px;}
-ion-modal.full-modal .modal-close, ion-modal.full-modal .modal-show {--border-color:#1E1671; text-transform:capitalize; --padding-top:1rem; --padding-bottom:1rem; --padding-start:1.5em; --padding-end:1.5em; font-size:16px;}
-ion-modal.full-modal .modal-close {--color:#1E1671;}
-ion-modal.full-modal .modal-show {--background:#1E1671; color:#fff;}
+
+/*ion-modal#diamondSearchModal ion-content { font-size: 12px; }*/
+ion-modal#diamondSearchModal ion-row.dropdown-row {align-items:center;}
+ion-modal#diamondSearchModal ion-row.dropdown-row .dropdown-col {display:flex; flex-direction:row; align-items:center; justify-items:center; padding:0 5px;}
+ion-modal#diamondSearchModal ion-row.dropdown-row .dropdown-col:first-child {padding-left:0;}
+ion-modal#diamondSearchModal ion-row.dropdown-row .dropdown-col:last-child {padding-right:0;}
+ion-modal#diamondSearchModal ion-row.dropdown-row .dropdown-label {font-size:14px; color:#1E1671; margin-right:5px;}
+
+ion-modal#diamondSearchModal ion-grid.desc-table {margin:0; width:100%; padding:0; text-align:center; color:#1E1671;}
+ion-modal#diamondSearchModal ion-grid.desc-table ion-row {align-items:center;}
+
+ion-modal#diamondSearchModal .input-separator-text {margin:0 5px; white-space:nowrap; font-size: 12px;}
+

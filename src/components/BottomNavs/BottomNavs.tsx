@@ -9,6 +9,7 @@ interface TabItem {
     href: string;
     icon: ReactElement;
     label: string;
+    clickname:string;
 }
 
 interface BottomTabsProps {
@@ -18,34 +19,11 @@ interface BottomTabsProps {
 
 const BottomNavigation: React.FC<BottomTabsProps> = ({ tabs, className = "" }) => {
 
-  return (
-
-    /*<IonTabBar className="fixed-tabs" slot="bottom">
-        <IonTabButton tab="home" href="/home">
-            <PiListNumbers className="icon" />
-            <IonLabel>Num. All</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="search" href="/search">
-            <GoHistory className="icon" />
-            <IonLabel>History</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="add" href="/add">
-            <GrTag className="icon" />
-            <IonLabel>Print Tag</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="likes" href="/likes">
-            <PiScroll className="icon" />
-            <IonLabel>Print Label</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="profile" href="/profile">
-            <GrCertificate className="icon" />
-            <IonLabel>Print Cert.</IonLabel>
-        </IonTabButton>
-      </IonTabBar>*/
+  return (   
 
     <IonTabBar className={`fixed-tabs ${className}`} slot="bottom">
         {tabs.map((item) => (
-        <IonTabButton key={item.tab} tab={item.tab} href={item.href}>
+        <IonTabButton key={item.tab} tab={item.tab}  onClick={item.clickname}>
             {item.icon}
             <IonLabel>{item.label}</IonLabel>
         </IonTabButton>

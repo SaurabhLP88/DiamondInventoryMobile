@@ -1,9 +1,8 @@
 
 import React, { useState, useRef } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonButtons, IonThumbnail, IonPopover, IonDatetime, IonCheckbox, IonImg } from '@ionic/react';
-import { HexColorPicker } from "react-colorful";
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonPopover, IonDatetime, IonImg, IonTextarea } from '@ionic/react';
 
-import { addOutline, chevronBack, chevronForward, informationCircleOutline, removeOutline, calendarOutline } from "ionicons/icons";
+import { chevronBack, chevronForward, calendarOutline } from "ionicons/icons";
 import { PiHandshake } from "react-icons/pi";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -25,11 +24,12 @@ const JewelEntry: React.FC = () => {
   ];
 
   const steps = [
-    "Stone Identification",
-    "Physical Attributes",
-    "Certificate Information",
+    "Jewelry Identification",
+    "Qty & Custom Fields",
     "Price & Cost",
-    "Upload Image"
+    "Certificate Information",
+    "Search Results",
+    "Upload Media"
   ];
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState<"next" | "prev">("next");
@@ -77,10 +77,10 @@ const JewelEntry: React.FC = () => {
   ];
 
   const uploadBoxes = [
-    { title: 'Certificate Image', description: 'Add your Certificate here' },
-    { title: 'Jewelry Image', description: 'Add your Jewelry image here' },
-    { title: 'Stone Image', description: 'Add your Stone Image here' },
-    { title: 'Upload 360° Image', description: 'Here add the 360° Image of Stone' },
+    { title: 'Stone Certificate', description: 'Add your Stone Certificate here' },
+    { title: 'Stone Image', description: 'Add your Stone image here' },
+    { title: 'Jewelry Certificate', description: 'Add your Jewelry Certificate here' },
+    { title: 'Jewelry Image', description: 'Add the Jewelry Image' },
     { title: 'Upload Video', description: 'Add your Video here' },
   ];
 
@@ -106,8 +106,23 @@ const JewelEntry: React.FC = () => {
     setPreviewUrls(newUrls);
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 200;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth"
+      });
+    }
+  };
+  const columnNames = [
+    "Stone Type", "Shape", "Color", "Fancy", "Clarify", "Lab", "Cert#", "Qty", "Wt", "Size", "Cost / Ct", "Total", "Center", "Treatment", "Stone#",
+  ];
+  const sampleData = Array(50).fill({});
+
   return (
-    <IonPage className="bg-gradient">
+    <IonPage className="jewel-entry bg-gradient">
 
         {/* Header */}
         <TopHeader pageTitle="Jewel Entry" />
@@ -140,7 +155,7 @@ const JewelEntry: React.FC = () => {
                 
               <IonList className='entry-content'>
                 <IonItem>
-                  <IonLabel position="fixed">Stone#</IonLabel>
+                  <IonLabel position="fixed">Record#</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -149,12 +164,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Carat <IonIcon icon={informationCircleOutline} /></IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Lab</IonLabel>
+                  <IonLabel position="fixed">SKU#</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -163,17 +173,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Certificate#</IonLabel>
-                  <IonInput placeholder="-" />
-                  <IonThumbnail className="thumb-img" slot="end">
-                    <img src="/src/assets/images/egl_usa.jpg" alt="Certificate Client" />
-                  </IonThumbnail>
-                </IonItem>
-
-                <IonItemDivider className="entry-divider"></IonItemDivider>
-
-                <IonItem>
-                  <IonLabel  position="fixed">Shape</IonLabel>
+                  <IonLabel position="fixed">Stock#</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -182,12 +182,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Color</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Clarity</IonLabel>
+                  <IonLabel position="fixed">Group</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -196,17 +191,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Measurement</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel  position="fixed">Cut</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Fancy Color <IonIcon icon={informationCircleOutline} /></IonLabel>
+                  <IonLabel position="fixed">Category</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -215,12 +200,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Code</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Pair</IonLabel>
+                  <IonLabel position="fixed">Sub Category</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -229,7 +209,7 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel  position="fixed">Size</IonLabel>
+                  <IonLabel position="fixed">Metal</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
                     <IonSelectOption value="opt1">Option 1</IonSelectOption>
                     <IonSelectOption value="opt2">Option 2</IonSelectOption>
@@ -238,192 +218,17 @@ const JewelEntry: React.FC = () => {
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Quantity <IonIcon icon={informationCircleOutline} /></IonLabel>
-                  <IonButtons>
-                    <IonButton onClick={() => setNumberInput(numberInput > 0 ? numberInput - 1 : 0)}><IonIcon icon={removeOutline} /></IonButton>
-                    <IonInput  value={numberInput}  type="number" onIonInput={e => setNumberInput(parseInt(e.detail.value!, 10) || 0)} className="number-input" />
-                    <IonButton onClick={() => setNumberInput(numberInput + 1)}><IonIcon icon={addOutline} /></IonButton>
-                  </IonButtons>
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Matching Stone</IonLabel>
+                  <IonLabel position="fixed">Metal Wt.</IonLabel>
+                  <IonInput placeholder="-" />
+                  <span className="input-separator-text">-</span>
                   <IonInput placeholder="-" />
                 </IonItem>
 
                 <IonItem>
-                  <IonLabel position="fixed">Stone Radio</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>                
-                
-                <div style={{position: "relative"}}>
-                  {showPicker && (
-                    <div className="picker-dropdown">
-                      <HexColorPicker color={colorPalette} onChange={handleColorChange} />
-                      <IonButton expand="block" size="small" onClick={applyColor} className="apply-btn"> Apply Color </IonButton>
-                    </div>
-                  )}
-                </div>                
-                <IonItem>
-                  <IonLabel  position="fixed">Pantone Color</IonLabel>
-                  <IonInput
-                    value={colorPalette}
-                    ref={inputRef}
-                    onClick={handleInputClick}
-                    onIonInput={(e) => setColorPalette(e.detail.value!)}
-                    className="color-input"
-                  />
+                  <IonLabel position="fixed">Metal Cost</IonLabel>
+                  <IonInput placeholder="-" />
                 </IonItem>
 
-                <IonItem>
-                  <IonLabel position="fixed">BGM</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-
-                <IonItem>
-                  <IonLabel position="fixed">Eye Clean</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-              </IonList>
-            )}
-
-            {currentStep === 1 && (
-              <IonList className='entry-content'>
-                <IonItem>
-                  <IonLabel position="fixed">Depth %</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Table %</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Crown A</IonLabel>
-                  <IonInput placeholder="-" />
-                  <span className="input-separator-text">-- H --</span>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Pavillion A</IonLabel>
-                  <IonInput placeholder="-" />
-                  <span className="input-separator-text">-- H --</span>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Girdle</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Culet</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Polish</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Symmetry</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Fluorescene</IonLabel>
-                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Growth Type</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Key To Symbol</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-               
-              </IonList>
-            )}            
-
-            {currentStep === 2 && (
-              <IonList className='entry-content'>
-                <IonItem id="cert-trigger" className="date-picker-area" ref={triggerRef}>
-                  <IonLabel position="fixed">Cert. Date</IonLabel>
-                  <IonInput placeholder="Select date" value={selectedDate} readonly={true} />
-                  <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendar(true)} />
-                </IonItem>
-                <IonPopover isOpen={showCalendar} trigger="cert-trigger" onDidDismiss={() => setShowCalendar(false)} showBackdrop={false} side="bottom" alignment="center">
-                  <IonDatetime
-                    presentation="date"
-                    onIonChange={(e) => {
-                      const value = e.detail.value;
-                      if (typeof value === 'string') {
-                        setSelectedDate(value);
-                        setShowCalendar(false);
-                      }
-                    }}
-                  />
-                </IonPopover>
-                <IonItem>
-                  <IonLabel position="fixed">Expenses</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Cert. Comments</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed" className="label-top-align">Treatment</IonLabel>
-                  <IonGrid className="checkbox-grid">
-                    {[0, 1, 2].map((row) => (
-                      <IonRow key={row}>
-                        {[0, 1, 2].map((col) => {
-                          const index = row * 3 + col;
-                          if (index >= 7) return null;
-                          if (index >= 8) return null;
-                          return (
-                            <IonCol key={col} size="4" className="ion-text-center">
-                              <IonItem lines="none">
-                                <IonCheckbox slot="start" className="rounded-checkbox" />
-                                <IonLabel>{optionsDefault[index]}</IonLabel>
-                              </IonItem>
-                            </IonCol>
-                          );
-                        })}
-                      </IonRow>
-                    ))}
-                  </IonGrid>
-                </IonItem>
-                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Purchase Information</h2></IonItem>
-                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
                 <IonItem>
                   <IonLabel position="fixed">Vendor</IonLabel>
                   <IonSelect placeholder="Select" interface="popover" className="corner-select">
@@ -432,19 +237,259 @@ const JewelEntry: React.FC = () => {
                     <IonSelectOption value="opt3">Option 3</IonSelectOption>
                   </IonSelect>
                 </IonItem>
+
                 <IonItem>
-                  <IonLabel position="fixed">Bill #</IonLabel>
+                  <IonLabel position="fixed">Vendor Stock#</IonLabel>
                   <IonInput placeholder="-" />
-                  <IonButton className="button-view">View</IonButton>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Jewelry Expenses</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Customer</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
                 </IonItem>                
-                <IonItem id="purchase-trigger" className="date-picker-area" ref={triggerRef}>
+
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Current Metal Prices / 10 Gram</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
+
+                <IonItem>
+                  <IonLabel position="fixed">Gold</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Platinum</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Silver</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+              </IonList>
+            )}
+
+            {currentStep === 1 && (
+              <IonList className='entry-content'>
+
+                <IonItem>
+                  <IonLabel position="fixed">Quantity</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Qty on Memo</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Qty Sold</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Qty on Hand</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Memo Qty</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Billed Qty</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Committed Qty</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Transfered Qty to Sales Person </IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">On Hand Qty </IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Custom Fields</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
+                
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 1</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 2</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 3</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 4</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 5</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 6</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 7</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Custom Field 8</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>            
+               
+              </IonList>
+            )}
+
+            {currentStep === 2 && (
+              <IonList className='entry-content'>
+                <IonItem>
+                  <IonLabel position="fixed">T. Metal Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Diamond Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Gem Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Labor Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Current Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Adjust Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                  <span className="input-separator-text">-</span>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Total Cost</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Code</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Sell Price</IonLabel>
+                  <IonInput placeholder="-" />
+                  <span className="input-separator-text">M %</span>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Tag Price</IonLabel>
+                  <IonInput placeholder="-" />
+                  <span className="input-separator-text">M %</span>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="fixed">Mounting Sell Price</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+                
+                <IonItem>
+                  <IonLabel position="fixed">Profit</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+              </IonList>
+            )}     
+
+            {currentStep === 3 && (
+              <IonList className='entry-content'>
+
+                <IonItem>
+                  <IonLabel position="fixed">In House Location</IonLabel>
+                  <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                    <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                    <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                    <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+
+                <IonItem>
+                  <IonLabel position="fixed">Memo In #</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem id="cert-trigger" className="date-picker-area" ref={triggerRef}>
                   <IonLabel position="fixed">Purchase Date</IonLabel>
                   <IonInput placeholder="Select date" value={selectedDate} readonly={true} />
                   <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendar(true)} />
                 </IonItem>
-                <IonPopover isOpen={showCalendar} trigger="purchase-trigger" onDidDismiss={() => setShowCalendar(false)} showBackdrop={false} side="bottom" alignment="center">
+                <IonPopover isOpen={showCalendar} trigger="cert-trigger" onDidDismiss={() => setShowCalendar(false)} showBackdrop={false} side="bottom" alignment="center">
                   <IonDatetime
                     presentation="date"
+                    className="calendar-sm"
                     onIonChange={(e) => {
                       const value = e.detail.value;
                       if (typeof value === 'string') {
@@ -454,68 +499,105 @@ const JewelEntry: React.FC = () => {
                     }}
                   />
                 </IonPopover>
-                <IonItem>
-                  <IonLabel position="fixed">LOT #</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem className="no-mb">
-                  <h2 className="entry-subtitle">On Hold</h2>
-                  <IonButton className="button-view" style={{ marginLeft: 'auto' }}>View</IonButton>
-                </IonItem>
-                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
-                <IonItem>
-                  <IonLabel position="fixed">Customer</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Expires</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-              </IonList>
-            )}
 
-            {currentStep === 3 && (
-              <IonList className='entry-content'>
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Total Diamond Weight</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
+
                 <IonItem>
-                  <IonLabel position="fixed">Last Import Cost</IonLabel>
+                  <IonLabel position="fixed">Qty</IonLabel>
                   <IonInput placeholder="-" />
                 </IonItem>
                 <IonItem>
-                  <IonLabel position="fixed">Cost / CT</IonLabel>
+                  <IonLabel position="fixed">Weight</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Total Gem Weight</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
+
+                <IonItem>
+                  <IonLabel position="fixed">Qty</IonLabel>
                   <IonInput placeholder="-" />
                 </IonItem>
                 <IonItem>
-                  <IonLabel position="fixed">On Hand Cost</IonLabel>
+                  <IonLabel position="fixed">Weight</IonLabel>
+                  <IonInput placeholder="-" />
+                </IonItem>
+
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Total Carats</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>
+
+                <IonItem>
+                  <IonLabel position="fixed">Center Stone</IonLabel>
                   <IonInput placeholder="-" />
                 </IonItem>
                 <IonItem>
-                  <IonLabel position="fixed">Total Cost</IonLabel>
+                  <IonLabel position="fixed">Tag Dia CT	</IonLabel>
                   <IonInput placeholder="-" />
                 </IonItem>
                 <IonItem>
-                  <IonLabel position="fixed">Cost % off RAP</IonLabel>
+                  <IonLabel position="fixed">Tag Gem CT</IonLabel>
                   <IonInput placeholder="-" />
+                </IonItem>   
+
+                <IonItem className="ion-text-center no-mb"><h2 className="entry-subtitle">Descriptions</h2></IonItem>
+                <IonItemDivider className="entry-divider" style={{ marginTop: '5px' }}></IonItemDivider>    
+
+                <IonItem className="label-top-align">
+                  <IonLabel position="fixed">Notes</IonLabel>
+                  <IonTextarea placeholder="-" />
                 </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">RAP Price</IonLabel>
-                  <IonInput placeholder="-" />
+                <IonItem className="label-top-align">
+                  <IonLabel position="fixed">Description</IonLabel>
+                  <IonTextarea placeholder="-" />
+                </IonItem>  
+                <IonItem className="label-top-align">
+                  <IonLabel position="fixed">Short Description</IonLabel>
+                  <IonTextarea placeholder="-" />
+                </IonItem>  
+                <IonItem className="label-top-align">
+                  <IonLabel position="fixed">Short Description 2</IonLabel>
+                  <IonTextarea placeholder="-" />
                 </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Sell Price / CT</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Sell % off RAP</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel position="fixed">Total Sell Price</IonLabel>
-                  <IonInput placeholder="-" />
-                </IonItem>
+                
               </IonList>
             )}
 
             {currentStep === 4 && (
+              <div className="scroll-wrapper table-scroll">                          
+                <div className="table-header">
+                  <IonButton fill="clear" onClick={() => scroll("left")} className="scroll-arrow left">
+                    <IonIcon icon={chevronBack} />
+                  </IonButton>
+                  <IonButton fill="clear" onClick={() => scroll("right")} className="scroll-arrow right">
+                    <IonIcon icon={chevronForward} />
+                  </IonButton>
+                </div>
+                <div className="table-container" ref={scrollRef}>
+                  <table className="custom-table">
+                    <thead>
+                      <tr>
+                        {columnNames.map((name, idx) => (
+                          <th key={idx}>{name}</th>
+                        ))}                        
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sampleData.map((_, rowIndex) => (
+                        <tr key={rowIndex}>
+                          {columnNames.map((_, colIndex) => (
+                            <td key={colIndex}>—</td>
+                          ))}                          
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>                
+                
+              </div>
+            )}
+
+            {currentStep === 5 && (
               <IonList className='entry-content'>
 
                 <>
@@ -560,66 +642,6 @@ const JewelEntry: React.FC = () => {
                   ))}
                 </>
 
-
-                {/*
-
-                  
-
-                <IonItem className="upload-title">
-                  <div className="upload-title-inner">
-                    <h2 className="entry-subtitle">Certificate Image</h2>
-                    <p className="entry-paragraph">Add your Certificate here</p>
-                  </div>
-                </IonItem>
-                <IonItem className="upload-area">
-                  <div className="upload-box">
-                    <IonLabel className="upload-text">Upload your file</IonLabel>
-
-                    {imagePreview && <IonImg src={imagePreview} className="preview-img" />}
-
-                    <IonButton onClick={openFilePicker} className="upload-btn">
-                      {imagePreview ? 'Replace' : 'Upload'}
-                    </IonButton>
-
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      ref={fileInputRef}
-                      hidden
-                      onChange={handleFileChange}
-                    />
-                  </div>
-                </IonItem>
-                <IonItem className="upload-title">
-                  <div className="upload-title-inner">
-                    <h2 className="entry-subtitle">Jewelry Image</h2>
-                    <p className="entry-paragraph">Add your Jewelry here</p>
-                  </div>
-                </IonItem>
-                <IonItem></IonItem>
-                <IonItem className="upload-title">
-                  <div className="upload-title-inner">
-                    <h2 className="entry-subtitle">Stone Image</h2>
-                    <p className="entry-paragraph">Add your Stone here</p>
-                  </div>
-                </IonItem>
-                <IonItem></IonItem>
-                <IonItem className="upload-title">
-                  <div className="upload-title-inner">
-                    <h2 className="entry-subtitle">Upload 360° Image</h2>
-                    <p className="entry-paragraph">Here add the 360° Image of Stone</p>
-                  </div>
-                </IonItem>
-                <IonItem></IonItem>
-                <IonItem className="upload-title">
-                  <div className="upload-title-inner">
-                    <h2 className="entry-subtitle">Upload Video</h2>
-                    <p className="entry-paragraph">Add Video</p>
-                  </div>
-                </IonItem>
-                <IonItem></IonItem>
-                */}
-
               </IonList>
             )}
           </div>
@@ -640,7 +662,7 @@ const JewelEntry: React.FC = () => {
               </IonCol>
 
               <IonCol size="auto">
-                <IonButton onClick={nextStep} disabled={currentStep === steps.length - 1}>Save & Next</IonButton>
+                <IonButton onClick={nextStep}>Save & Next</IonButton> {/* disabled={currentStep !== steps.length - 1} */}
               </IonCol>
 
             </IonRow>

@@ -1,7 +1,7 @@
 
 import { useRef, useState } from "react";
-import { IonPage, IonContent, IonButton, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonSegment, IonSegmentButton, IonGrid, IonSelect, IonSelectOption, IonRadio, IonInput  } from '@ionic/react';
-import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, addOutline, close } from "ionicons/icons";
+import { IonPage, IonContent, IonButton, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonGrid, IonSelect, IonSelectOption, IonInput, IonPopover, IonDatetime, IonRadio  } from '@ionic/react';
+import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, addOutline, close, calendarOutline } from "ionicons/icons";
 import { PiListNumbers, PiScroll } from "react-icons/pi";
 import { GoHistory } from "react-icons/go";
 import { GrTag, GrCertificate } from "react-icons/gr";
@@ -11,9 +11,7 @@ import BottomNavigation from '../../../components/BottomNavs/BottomNavs';
 import './JewelSearch.css';
 
 const columnNames = [
-  "Stone", "Qty", "Shape", "Carat", "Memo", "On Memo To", "Color", "Clarity", "Cut", "Polish", "Symm.",
-  "Fluor.", "Measur.", "Depth", "Table", "Girdle", "Culet", "Cert.", "Lab", "RAP", "Cost/PC", "%Sell",
-  "-RAP", "Total Cost", "Sell P/C", "Total Sale", "Markup%", "Margin%"
+  "SKU#", "Style", "Vendor Style", "Qty", "Group", "Category", "Metal", "Description", "On Memo", "Sell $", "Partnership"
 ];
 
 const optionsDefault = [
@@ -66,10 +64,15 @@ const JewelSearch: React.FC = () => {
     { tab: "likes", href: "/likes", icon: <PiScroll className="icon" />, label: "Print Label" },
     { tab: "profile", href: "/profile", icon: <GrCertificate className="icon" />, label: "Print Cert." }
   ];
-  
+
+  const [selectedDateFrom, setSelectedDateFrom] = useState('');
+  const [showCalendarFrom, setShowCalendarFrom] = useState(false);
+
+  const [selectedDateTo, setSelectedDateTo] = useState('');
+  const [showCalendarTo, setShowCalendarTo] = useState(false);
 
   return (
-    <IonPage className="bg-gradient">
+    <IonPage className="jewel-search bg-gradient">
 
         {/* Header */}
         <TopHeader pageTitle="Jewel Search" />
@@ -85,7 +88,7 @@ const JewelSearch: React.FC = () => {
               </IonButton>
             </div>
             <div className="table-container" ref={scrollRef}>
-              <table className="custom-table">
+              <table className="custom-table fixed-cols">
                 <thead>
                   <tr>
                     <th></th>
@@ -120,9 +123,12 @@ const JewelSearch: React.FC = () => {
             </div>
             <div className="table-footer">
               <IonRow>
-                <IonCol size="4">Total Quantity <span>22</span> </IonCol>
-                <IonCol size="4">Total Carats <span>40.56</span> </IonCol>
-                <IonCol size="4">Total Price <span>$400,115.65</span> </IonCol>
+                <IonCol size="4">Total Records <span>400,115</span> </IonCol>
+                <IonCol size="8" className="text-right"> 
+                  <IonButton fill="clear" className="view-total-btn">
+                    View Totals
+                  </IonButton>
+                </IonCol>
               </IonRow>
 
             </div>
@@ -134,341 +140,551 @@ const JewelSearch: React.FC = () => {
         {/* Bottom Navigation */}
         <BottomNavigation tabs={jewelSearchTabs} />
 
-        <IonModal id="filter-modal" className="full-modal filter-modal" ref={modalFilter} backdropDismiss={true} isOpen={filterShowModal} onDidDismiss={() => filterSetShowModal(false)}>
+        <IonModal id="jewelSearchModal" className="full-filter-modal filter-modal" ref={modalFilter} backdropDismiss={true} isOpen={filterShowModal} onDidDismiss={() => filterSetShowModal(false)}>
           <IonHeader>
             <IonToolbar>
               <IonTitle>Filters ( 5 selected )</IonTitle>
               <IonIcon icon={closeOutline} onClick={() => dismissModules()} slot="end" />
             </IonToolbar>
           </IonHeader>
-          <IonContent scrollY={true}>          
+          <IonContent scrollY={true}>  
           
-          <IonSegment className="tabs-segment" value={activeTab} onIonChange={e => setActiveTab(e.detail.value as string)}>
-            <IonSegmentButton value="tab1">
-              <IonLabel>Search</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="tab2">
-              <IonLabel>Advanced</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="tab3">
-              <IonLabel>Export</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-          
-          {activeTab === 'tab1' && (
-          <IonList className="line-separator">
-            <IonItem>
-              <IonGrid className="checkbox-grid">
-                {[0, 1, 2].map((row) => (
-                  <IonRow key={row}>
-                    {[0, 1, 2].map((col) => {
-                      const index = row * 3 + col;
-                      if (index >= 8) return null;
-                      return (
-                        <IonCol key={col} size="4" className="ion-text-center">
-                          <IonItem lines="none">
-                            <IonCheckbox slot="start" className="rounded-checkbox" />
-                            <IonLabel>{optionsDefault[index]}</IonLabel>
-                          </IonItem>
-                        </IonCol>
-                      );
-                    })}
-                  </IonRow>
-                ))}
-              </IonGrid>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <div className="select-container">
-                <IonLabel className="tabs-title">Type</IonLabel>
-                  <div className="toggle-buttons">
-                    {buttons.map((label) => (
-                      <IonButton
-                        key={label}
-                        onClick={() => toggleButton(label)}
-                        className={`toggle-btn ${selectedButtons.includes(label) ? 'selected' : ''}`}
-                      >
-                      <IonIcon
-                        slot="start"
-                        icon={selectedButtons.includes(label) ? close : addOutline}
-                      />
-                      {label}
-                    </IonButton>
-                  ))}
-                </div>
-            </div>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <div className="select-container">
-                <IonLabel className="tabs-title">Shape</IonLabel>
-                <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" >
-                  <IonSelectOption value="option1">Option 1</IonSelectOption>
-                  <IonSelectOption value="option2">Option 2</IonSelectOption>
-                  <IonSelectOption value="option3">Option 3</IonSelectOption>
-                </IonSelect>
-              </div>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <IonGrid className="fromTo-table">
-                {/* Table Header */}
-                <IonRow className="table-header">
-                  <IonCol size="2"></IonCol>
-                  <IonCol size="5" className="header-label">From</IonCol>
-                  <IonCol size="5" className="header-label">To</IonCol>
-                </IonRow>
-
-                {/* Stock# Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Stock#</IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                </IonRow>
-
-                {/* Weight Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Weight</IonCol>
-                  <IonCol size="5">
-                    <IonInput type="number" />
-                  </IonCol>
-                  <IonCol size="5">
-                    <IonInput type="number" />
-                  </IonCol>
-                </IonRow>
-
-                {/* Size Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Size</IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                </IonRow>
-
-                {/* Color Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Color</IonCol>
-                  <IonCol>
-                    <IonInput type="text" />
-                  </IonCol>
-                  <IonCol>
-                    <IonInput type="text" />
-                  </IonCol>
-                </IonRow>
-
-                {/* Clarity Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Clarity</IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                  <IonCol size="5">
-                    <IonInput type="text" />
-                  </IonCol>
-                </IonRow>
-
-                {/* Depth Row */}
-                <IonRow>
-                  <IonCol size="2" className="row-label">Depth</IonCol>
-                  <IonCol size="5">
-                    <IonInput type="number" />
-                  </IonCol>
-                  <IonCol size="5">
-                    <IonInput type="number" />
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-                          
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-            <div className="select-container">
-              <IonLabel className="tabs-title">Certified</IonLabel>
-
-              <IonGrid className="checkbox-grid">
-                {[0, 1, 2].map((row) => (
-                  <IonRow key={row}>
-                    {[0, 1, 2].map((col) => {
-                      const index = row * 3 + col;
-                      return (
-                        <IonCol key={col} size="4" className="ion-text-center">
-                          <IonItem lines="none">
-                            <IonRadio slot="start" className="rounded-radio" />
-                            <IonLabel>{optionsCertified[index]}</IonLabel>
-                          </IonItem>
-                        </IonCol>
-                      );
-                    })}
-                  </IonRow>
-                ))}
-              </IonGrid>
-              </div>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-            <div className="select-container">
-              <IonLabel className="tabs-title">Treatment</IonLabel>
-
-              <IonGrid className="checkbox-grid">
-                {[0, 1, 2].map((row) => (
-                  <IonRow key={row}>
-                    {[0, 1, 2].map((col) => {
-                      const index = row * 3 + col;
-                      if (index >= 8) return null;
-                      return (
-                        <IonCol key={col} size="4" className="ion-text-center">
-                          <IonItem lines="none">
-                            <IonRadio slot="start" className="rounded-radio" />
-                            <IonLabel>{optionsTreatment[index]}</IonLabel>
-                          </IonItem>
-                        </IonCol>
-                      );
-                    })}
-                  </IonRow>
-                ))}
-              </IonGrid>
-              </div>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <IonRow className="dropdown-row">
-                <IonCol size="6" className="dropdown-col">
-                  <IonLabel className="dropdown-label">Price</IonLabel>
-                  <IonSelect placeholder="Select Price" interface="popover" className="corner-select">
-                    <IonSelectOption value="low">Low</IonSelectOption>
-                    <IonSelectOption value="medium">Medium</IonSelectOption>
-                    <IonSelectOption value="high">High</IonSelectOption>
-                  </IonSelect>
-                </IonCol>
-
-                <IonCol size="6" className="dropdown-col">
-                  <IonLabel className="dropdown-label">Status</IonLabel>
-                  <IonSelect placeholder="Select Status" interface="popover" className="corner-select">
-                    <IonSelectOption value="available">Available</IonSelectOption>
-                    <IonSelectOption value="sold">Sold</IonSelectOption>
-                    <IonSelectOption value="pending">Pending</IonSelectOption>
-                  </IonSelect>
-                </IonCol>
-              </IonRow>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <IonGrid className="checkbox-grid">
-                <IonRow>
-                  <IonCol size="4" className="ion-text-center">
-                    <IonItem lines="none">
-                      <IonRadio slot="start" className="rounded-radio" />
-                      <IonLabel>Archive</IonLabel>
-                    </IonItem>
-                  </IonCol>
-                  <IonCol size="4" className="ion-text-center">
-                    <IonItem lines="none">
-                      <IonRadio slot="start" className="rounded-radio" />
-                      <IonLabel>Unarchive</IonLabel>
-                    </IonItem>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonItem>
-            <IonItemDivider />
-            <IonItem>
-              <div className="select-container">
-                <IonLabel className="tabs-title">Sort Fields</IonLabel>
-                  <IonGrid className="desc-table">
+            <IonList className="line-separator">
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Search By</IonLabel>
                     
-                    <IonRow>
-                      <IonCol size="1">1</IonCol>
-                      <IonCol size="8">
-                        <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                          <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                          <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                          <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                        </IonSelect>
-                      </IonCol>
-                      <IonCol size="1">
-                        <IonCheckbox className="rounded-checkbox2" />
-                      </IonCol>
-                      <IonCol size="2" className="desc-label">Desc</IonCol>
-                    </IonRow>
-
-                    <IonRow>
-                      <IonCol size="1">2</IonCol>
-                      <IonCol size="8">
-                        <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                          <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                          <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                          <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                        </IonSelect>
-                      </IonCol>
-                      <IonCol size="1">
-                        <IonCheckbox className="rounded-checkbox2" />
-                      </IonCol>
-                      <IonCol size="2" className="desc-label">Desc</IonCol>
-                    </IonRow>
-
-                    <IonRow>
-                      <IonCol size="1">3</IonCol>
-                      <IonCol size="8">
-                        <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                          <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                          <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                          <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                        </IonSelect>
-                      </IonCol>
-                      <IonCol size="1">
-                        <IonCheckbox className="rounded-checkbox2" />
-                      </IonCol>
-                      <IonCol size="2" className="desc-label">Desc</IonCol>
-                    </IonRow>
-
-                    <IonRow>
-                      <IonCol size="1">4</IonCol>
-                      <IonCol size="8">
-                        <IonSelect placeholder="Select" interface="popover" className="corner-select">
-                          <IonSelectOption value="opt1">Option 1</IonSelectOption>
-                          <IonSelectOption value="opt2">Option 2</IonSelectOption>
-                          <IonSelectOption value="opt3">Option 3</IonSelectOption>
-                        </IonSelect>
-                      </IonCol>
-                      <IonCol size="1">
-                        <IonCheckbox className="rounded-checkbox2" />
-                      </IonCol>
-                      <IonCol size="2" className="desc-label">Desc</IonCol>
-                    </IonRow>
-                  </IonGrid> 
-
+                  <IonList className='select-content'>
+                    <IonItem>
+                      <IonLabel position="fixed">Style#</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">SKU#</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Group</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Category</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Sub Category</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Metal</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Bill#</IonLabel>
+                      <IonInput placeholder="-" />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Vendor</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Vendor Style</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Vendor Style</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Sell Price</IonLabel>
+                      <span className="input-separator-text">From</span>
+                      <IonInput placeholder="-" />
+                      <span className="input-separator-text">To</span>
+                      <IonInput placeholder="-" />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Cost Price</IonLabel>
+                      <span className="input-separator-text">From</span>
+                      <IonInput placeholder="-" />
+                      <span className="input-separator-text">To</span>
+                      <IonInput placeholder="-" />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Customer</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+                  </IonList>
               </div>
-            </IonItem>
-          </IonList>
-          )}
+              </IonItem>
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Stone Weights</IonLabel>
+                    
+                  <IonList className='select-content'>                    
+                    <IonItem>
+                      <IonLabel position="fixed">Total</IonLabel>
+                      <span className="input-separator-text">From</span>
+                      <IonInput placeholder="-" />
+                      <span className="input-separator-text">To</span>
+                      <IonInput placeholder="-" />
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="fixed">Center</IonLabel>
+                      <span className="input-separator-text">From</span>
+                      <IonInput placeholder="-" />
+                      <span className="input-separator-text">To</span>
+                      <IonInput placeholder="-" />
+                    </IonItem>
+                    
+                  </IonList>
+              </div>
+              </IonItem>
+              <IonItemDivider />
+              
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Memo Date</IonLabel>
+                  <IonRow className="dropdown-row">
+                    <IonCol size="6" className="dropdown-col">
+                      <IonLabel className="dropdown-label">From</IonLabel>
+                      <div className="date-input" id="memoDateFrom-trigger">
+                        <IonInput placeholder="Select date" value={selectedDateFrom} readonly={true} />
+                        <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendarFrom(true)} />
+                      </div>
+                      <IonPopover isOpen={showCalendarFrom} trigger="memoDateFrom-trigger" onDidDismiss={() => setShowCalendarFrom(false)} showBackdrop={false} side="bottom" alignment="center">
+                        <IonDatetime
+                          presentation="date"
+                          className="calendar-sm"
+                          onIonChange={(e) => {
+                            const value = e.detail.value;
+                            if (typeof value === 'string') {
+                              setSelectedDateFrom(value);
+                              setShowCalendarFrom(false);
+                            }
+                          }}
+                        />
+                      </IonPopover>
+                    </IonCol>
 
-        {activeTab === 'tab2' && (
-          <div>
-            <h2>Content for Tab 2</h2>
-            <p>This is the second tab's content.</p>
-          </div>
-        )}
+                    <IonCol size="6" className="dropdown-col">
+                      <IonLabel className="dropdown-label">From</IonLabel>
+                      <div className="date-input" id="memoDateTo-trigger">
+                        <IonInput placeholder="Select date" value={selectedDateTo} readonly={true} />
+                        <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendarTo(true)} />
+                      </div>
+                      <IonPopover isOpen={showCalendarTo} trigger="memoDateTo-trigger" onDidDismiss={() => setShowCalendarTo(false)} showBackdrop={false} side="bottom" alignment="center">
+                        <IonDatetime
+                          presentation="date"
+                          className="calendar-sm"
+                          onIonChange={(e) => {
+                            const value = e.detail.value;
+                            if (typeof value === 'string') {
+                              setSelectedDateTo(value);
+                              setShowCalendarTo(false);
+                            }
+                          }}
+                        />
+                      </IonPopover>
+                    </IonCol>
 
-        {activeTab === 'tab3' && (
-          <div>
-            <h2>Content for Tab 3</h2>
-            <p>This is the third tab's content.</p>
-          </div>
-        )}
+                  </IonRow>
+                </div>
+              </IonItem>
 
+              <IonItemDivider />              
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Purchase Date</IonLabel>
+                  <IonRow className="dropdown-row">
+                    <IonCol size="6" className="dropdown-col">
+                      <IonLabel className="dropdown-label">From</IonLabel>
+                      <div className="date-input" id="purchaseDateFrom-trigger">
+                        <IonInput placeholder="Select date" value={selectedDateFrom} readonly={true} />
+                        <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendarFrom(true)} />
+                      </div>
+                      <IonPopover isOpen={showCalendarFrom} trigger="purchaseDateFrom-trigger" onDidDismiss={() => setShowCalendarFrom(false)} showBackdrop={false} side="bottom" alignment="center">
+                        <IonDatetime
+                          presentation="date"
+                          className="calendar-sm"
+                          onIonChange={(e) => {
+                            const value = e.detail.value;
+                            if (typeof value === 'string') {
+                              setSelectedDateFrom(value);
+                              setShowCalendarFrom(false);
+                            }
+                          }}
+                        />
+                      </IonPopover>
+                    </IonCol>
+
+                    <IonCol size="6" className="dropdown-col">
+                      <IonLabel className="dropdown-label">From</IonLabel>
+                      <div className="date-input" id="purchaseDateTo-trigger">
+                        <IonInput placeholder="Select date" value={selectedDateTo} readonly={true} />
+                        <IonIcon size="large" icon={calendarOutline} onClick={() => setShowCalendarTo(true)} />
+                      </div>
+                      <IonPopover isOpen={showCalendarTo} trigger="purchaseDateTo-trigger" onDidDismiss={() => setShowCalendarTo(false)} showBackdrop={false} side="bottom" alignment="center">
+                        <IonDatetime
+                          presentation="date"
+                          className="calendar-sm"
+                          onIonChange={(e) => {
+                            const value = e.detail.value;
+                            if (typeof value === 'string') {
+                              setSelectedDateTo(value);
+                              setShowCalendarTo(false);
+                            }
+                          }}
+                        />
+                      </IonPopover>
+                    </IonCol>
+
+                  </IonRow>
+                </div>
+              </IonItem>
+
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Memo In</IonLabel>
+                  <IonGrid className="checkbox-grid">
+                    <IonRow>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>Yes</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>No</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>Any</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </div>
+              </IonItem>
+
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">On Hold</IonLabel>
+                  <IonGrid className="checkbox-grid">
+                    <IonRow>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>Yes</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>No</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonRadio slot="start" className="rounded-radio" />
+                          <IonLabel>Any</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </div>
+              </IonItem>              
+
+              <IonItemDivider />              
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Stones T. Price</IonLabel>
+                  <IonList className='select-content'>                    
+                    <IonItem>
+                      <span className="input-separator-text">From</span>
+                      <IonInput placeholder="-" />
+                      <span className="input-separator-text">To</span>
+                      <IonInput placeholder="-" />
+                    </IonItem>                    
+                  </IonList>
+                </div>
+              </IonItem>
+
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">                    
+                  <IonList className='select-content'>
+                    <IonItem>
+                      <IonLabel position="fixed">In House Location</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>                    
+                  </IonList>
+              </div>
+              </IonItem>
+
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">                    
+                  <IonList className='select-content'>
+                    <IonItem>
+                      <IonLabel position="fixed">Price</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>             
+                    <IonItem>
+                      <IonLabel position="fixed">Code</IonLabel>
+                      <IonInput placeholder="-" />
+                    </IonItem>   
+                    <IonItem>
+                      <IonLabel position="fixed">Returned to Vendor</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>   
+                    <IonItem>
+                      <IonLabel position="fixed">Filter</IonLabel>
+                      <IonInput placeholder="-" />
+                    </IonItem>        
+                  </IonList>
+              </div>
+              </IonItem>
+
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Custom Fields</IonLabel>
+
+
+                  <IonList className='select-content'>
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 1</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 2</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 3</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 4</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 5</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 6</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 7</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>
+    
+                    <IonItem>
+                      <IonLabel position="fixed">Custom Field 8</IonLabel>
+                      <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                        <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                        <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                        <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                      </IonSelect>
+                    </IonItem>  
+                  </IonList>
+
+
+
+                  
+                </div>
+              </IonItem>
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Select</IonLabel>
+                  <IonGrid className="checkbox-grid">
+                    <IonRow>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonCheckbox slot="start" className="rounded-checkbox" />
+                          <IonLabel>On Memo</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonCheckbox slot="start" className="rounded-checkbox" />
+                          <IonLabel>Sold Out</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                      <IonCol size="4" className="ion-text-center">
+                        <IonItem lines="none">
+                          <IonCheckbox slot="start" className="rounded-checkbox" />
+                          <IonLabel>On Hand</IonLabel>
+                        </IonItem>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </div>
+              </IonItem>
+              <IonItemDivider />
+              <IonItem>
+                <div className="select-container">
+                  <IonLabel className="tabs-title">Sort Fields</IonLabel>
+                    <IonGrid className="desc-table">
+                      
+                      <IonRow>
+                        <IonCol size="1">1</IonCol>
+                        <IonCol size="8">
+                          <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                            <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                            <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                            <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                          </IonSelect>
+                        </IonCol>
+                        <IonCol size="1">
+                          <IonCheckbox className="rounded-checkbox2" />
+                        </IonCol>
+                        <IonCol size="2" className="desc-label">Desc</IonCol>
+                      </IonRow>
+
+                      <IonRow>
+                        <IonCol size="1">2</IonCol>
+                        <IonCol size="8">
+                          <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                            <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                            <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                            <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                          </IonSelect>
+                        </IonCol>
+                        <IonCol size="1">
+                          <IonCheckbox className="rounded-checkbox2" />
+                        </IonCol>
+                        <IonCol size="2" className="desc-label">Desc</IonCol>
+                      </IonRow>
+
+                      <IonRow>
+                        <IonCol size="1">3</IonCol>
+                        <IonCol size="8">
+                          <IonSelect placeholder="Select" interface="popover" className="corner-select">
+                            <IonSelectOption value="opt1">Option 1</IonSelectOption>
+                            <IonSelectOption value="opt2">Option 2</IonSelectOption>
+                            <IonSelectOption value="opt3">Option 3</IonSelectOption>
+                          </IonSelect>
+                        </IonCol>
+                        <IonCol size="1">
+                          <IonCheckbox className="rounded-checkbox2" />
+                        </IonCol>
+                        <IonCol size="2" className="desc-label">Desc</IonCol>
+                      </IonRow>
+
+                      <IonRow>
+                        <IonCol size="12" className="text-right"> 
+                          <IonButton fill="clear" className="view-total-btn">Sort</IonButton>
+                        </IonCol>                       
+                      </IonRow>
+
+                    </IonGrid> 
+
+                </div>
+              </IonItem>
+            </IonList>
             
           </IonContent>
 
           <div className="modal-footer">
             <IonButton className="modal-close" fill="outline" onClick={() => dismissModules()}>
-              Close
+              Clear
             </IonButton>
             <IonButton className="modal-show" onClick={() => console.log("Show results clicked")}>
               Show Results (200)

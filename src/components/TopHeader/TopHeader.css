@@ -1,47 +1,33 @@
-.top-toolbar {padding:25px 10px !important; --background:transparent !important; --ion-background-color:transparent !important; box-shadow:none;}
-.logo-with-text {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-.logo {width:120px; height:auto; margin-left:10px; margin-right: 10px;}
-.logo-text {
-    font-size: 16px;
-    font-weight: 400;
-    color: #fff;
-  }
+ion-header.top-header-dashboard::part(container) {
+  padding-top: env(safe-area-inset-top);
+}
 
+.top-toolbar {padding:30px 15px 5px !important; --background:transparent !important; --ion-background-color:transparent !important; box-shadow:none;}
+.logo-with-text {display:flex; align-items:center; gap:0px;}
+/*.logo {width:120px; height:auto; margin-left:0px; margin-right:10px;}*/
+.logo-text {font-size:16px; font-weight:400; color:#fff;}
 ion-modal.common-modal {--min-height:auto; --max-height:300px; --border-radius:16px; --box-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); padding:0 10px;}
 ion-modal.common-modal::part(backdrop) {background:rgba(209, 213, 219); opacity:1;}
-ion-modal.common-modal { --max-height:180px; }
+ion-modal.common-modal {--max-height:180px;}
 ion-modal.common-modal ion-content {--background:#fff;}
-ion-modal.common-modal ion-toolbar {
-    --background: transparent;
-    --color: #000;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 45px;
-    padding: 10px 0 0;
-}
-ion-modal.common-modal ion-toolbar ion-title { font-size: 15px; }
-ion-modal.common-modal ion-toolbar ion-icon { font-size: 13px; margin: 0 10px; }
-ion-modal.common-modal ion-list {background:#fff; padding: 0;}
-ion-modal.common-modal ion-list ion-item {--background:#fff; --color:#333; --border-width:0; --inner-border-width:0; border:none;height: 42px;}
-ion-modal.common-modal ion-list ion-item ion-icon.icon-start { margin: 0 10px 0 20px; color: #333; }
-ion-modal.common-modal ion-list ion-item ion-icon.icon-arrow { margin: 0 0px 0 0px; color: #999; }
-ion-modal.common-modal ion-list ion-item ion-label {    margin: 0px; }
-
-
-ion-modal.module-modal { --max-height:360px; }
+ion-modal.common-modal ion-toolbar {--background:transparent; --color:#000; display:flex; justify-content:flex-end; align-items:center; height:45px; padding:10px 0 0;}
+ion-modal.common-modal ion-toolbar ion-title {font-size:15px;}
+ion-modal.common-modal ion-toolbar ion-icon {font-size:13px; margin:0 10px;}
+ion-modal.common-modal ion-list {background:#fff; padding:0;}
+ion-modal.common-modal ion-list ion-item {--background:#fff; --color:#333; --border-width:0; --inner-border-width:0; border:none; height:42px;}
+ion-modal.common-modal ion-list ion-item ion-icon.icon-start {margin:0 10px 0 20px; color:#333;}
+ion-modal.common-modal ion-list ion-item ion-icon.icon-arrow {margin:0 0px 0 0px; color:#999;}
+ion-modal.common-modal ion-list ion-item ion-label {margin:0px; font-size: 12px !important;}
+ion-modal.module-modal {--max-height:330px;}
 ion-modal.module-modal .module-icons {text-align:center; gap:5px;}
-ion-modal.module-modal .module-item {display:flex; flex-direction:column; align-items:center; color:#979797; margin-bottom:10px;}
+ion-modal.module-modal .module-item {display:flex; flex-direction:column; align-items:center; color:#979797; margin-bottom:5px;}
 ion-modal.module-modal .module-item .icon-box {display:inline-flex; align-items:center; justify-content:center; border:none; border-radius:50%; padding:10px; background:#fff; margin-bottom:10px; box-shadow:0 3px 8px 3px rgb(0 0 0 / 0.1);}
 ion-modal.module-modal .module-item .icon {font-size:28px; color:#1E1671;}
-
+ion-modal.module-modal .module-item ion-label { font-size: 12px; }
 .close-icon {color:#000;}
+.header-md {box-shadow:none;}
 
-.user-icon-fab {position:fixed; bottom:95px; right:20px; background-color:#5B53AB; color:#fff; border-radius:50%; box-shadow:0 4px 12px rgba(0, 0, 0, 0.2); padding:16px; z-index:999; cursor:pointer; transition:transform 0.2s ease; border:10px solid #1E1671;}
-.user-icon-fab:hover {transform:scale(1.05);}
-
-.header-md { box-shadow: none; }
+.top-menus ion-button {     
+    margin-inline-start: 0px;
+    margin-inline-end: 0px; --color: #fff;
+}

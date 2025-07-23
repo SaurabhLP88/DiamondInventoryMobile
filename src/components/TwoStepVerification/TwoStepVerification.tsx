@@ -1,6 +1,6 @@
 import { useState} from "react";
 import { useHistory } from "react-router-dom";
-import { IonImg, IonContent, IonItem, IonInput, IonButton, IonText } from '@ionic/react';
+import { IonImg, IonContent, IonItem, IonInput, IonButton, IonText, IonRow, IonCol } from '@ionic/react';
 import './TwoStepVerification.css';
 import axios from "axios";
 import Cookies from 'universal-cookie';
@@ -73,14 +73,15 @@ const TwoStepVerification: React.FC<VerificationProps> = ({ onBack, onVerifySucc
 
           {/* Verification Input */}
           <IonItem className="no-padding-item">
-            <IonInput label="Your Verification Code" labelPlacement="floating" fill="solid" placeholder="Enter your code" type="password" onIonChange={(e) => setCode(e.detail.value!)} required />
+            <IonInput label="Your Verification Code" labelPlacement="floating" fill="solid" placeholder="Enter your code" type="number" onIonChange={(e) => setCode(e.detail.value!)} required />
           </IonItem>
 
           {error && <IonText color="danger" className="error-text">{error}</IonText>}
-          
-          <IonButton expand="full" onClick={handleVerify} className="button-grad ion-margin-top" style={{ "--ion-margin": "40px" }}> Verify </IonButton>
-          
-          <IonButton expand="full" fill="clear" onClick={onBack} className="button-grad-grey ion-margin-top" style={{ "--ion-margin": "20px" }}> Go Back </IonButton>
+
+          <IonRow>
+            <IonCol><IonButton expand="full" fill="clear" onClick={onBack} className="button-grad-grey ion-margin-top" style={{ "--ion-margin": "10px" }}> Go Back </IonButton></IonCol>
+            <IonCol><IonButton expand="full" onClick={handleVerify} className="button-grad ion-margin-top" style={{ "--ion-margin": "10px" }}> Verify </IonButton></IonCol>            
+          </IonRow>
           
         </div>
       </IonContent>

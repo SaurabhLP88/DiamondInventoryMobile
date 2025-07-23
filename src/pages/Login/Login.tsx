@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText } from '@ionic/react';
+import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText, IonIcon } from '@ionic/react';
 import LoginContainer from "../../components/LoginContainer/LoginContainer";
 import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVerification";
 import './Login.css';
@@ -23,12 +23,12 @@ const history = useHistory();
   return (
     <IonPage>
       
-      <IonContent scrollY={false} className="no-scroll bg-gradient" fullscreen>
+      <IonContent scrollY={false} className="no-scroll bg-gradient">
 
         <div className="ion-padding">
           {/* Logo */}
           <div className="logo-container">
-            <IonImg src="/src/assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
+            <IonImg src="assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
           </div>
 
           {/* Welcome Text */}

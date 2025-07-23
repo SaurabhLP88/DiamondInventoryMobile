@@ -60,13 +60,11 @@ const HomeContainer: React.FC<ContainerProps> = ({ onAccountSuccess }) => {
   return (
     <div id="access-container">
 
-      <div className="logo-client-container">
-        <IonImg src="/src/assets/images/client_logo.svg" alt="Client Logo" className="logo-client" />
-      </div>
+      
 
       <h1 className="login-heading">Access Your Account</h1>
 
-      <IonContent scrollY={false} className="no-scroll login-content" style={{ "--background": "transparent", "--overflow": "visible" }}>
+      {/* <IonContent fullscreen className="no-scroll login-content">*/}
         <div className="login-wrap">
           {/* Email Input */}
           <IonItem className="no-padding-item">
@@ -77,11 +75,11 @@ const HomeContainer: React.FC<ContainerProps> = ({ onAccountSuccess }) => {
           {error && <IonText color="danger" className="error-text">{error}</IonText>}
 
           {/* Sign In Button */}
-          <IonButton expand="full" className="button-grad ion-margin-top" onClick={handleAccont} style={{ "--ion-margin": "40px" }}>
+          <IonButton expand="full" className="button-grad ion-margin-top" onClick={handleAccont} style={{ "--ion-margin": "25px" }}>
             Submit
           </IonButton>
         </div>
-      </IonContent>
+      {/* </IonContent>*/}
       
     </div>
   );

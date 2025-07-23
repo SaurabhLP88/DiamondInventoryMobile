@@ -21,17 +21,17 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       
-      <IonContent scrollY={false} className="no-scroll bg-gradient" fullscreen>
+      <IonContent scrollY={false} className="no-scroll bg-gradient">
 
         <div className="ion-padding">
           {/* Logo */}
           <div className="logo-container">
-            <IonImg src="/src/assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
+            <IonImg src="assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
           </div>
 
           {/* Welcome Text */}
           <IonText className="welcome-text">
-            <h1>Welcome To DiaTrac Solutions {storedSessionId}</h1>
+            <h1>Welcome To DiaTrac Solutions <br /> <span className="ion-bold-700">{storedSessionId}</span></h1>
           </IonText>
         </div>
 
