@@ -6,7 +6,6 @@ import { useSwipeable } from 'react-swipeable';
 
 import { addOutline, chevronBack, chevronForward, informationCircleOutline, removeOutline, calendarOutline, closeOutline } from "ionicons/icons";
 import { PiHandshake } from "react-icons/pi";
-import { AiOutlineFileAdd } from "react-icons/ai";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GoHistory } from "react-icons/go";
 import { GrTag } from "react-icons/gr";
@@ -14,10 +13,7 @@ import { GrTag } from "react-icons/gr";
 import TopHeader from '../../../components/TopHeader/TopHeader';
 import BottomNavigation from '../../../components/BottomNavs/BottomNavs';
 import './DiamondEntry.css';
-import axios from "axios";
 import Cookies from 'universal-cookie';
-import { useForm, Controller } from "react-hook-form";
-import { IonSpinner } from '@ionic/react';
 
 const DiamondEntry: React.FC = () => {
 
@@ -230,199 +226,6 @@ const DiamondEntry: React.FC = () => {
 
 
 
-  useEffect(() => {
-
-    const fetchData_girdle = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_girdle&col=Code')
-      .then((response) => {
-        setData_girdle(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_culet = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_culet&col=Code')
-      .then((response) => {
-        setData_culet(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_polish = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_polish&col=Code')
-      .then((response) => {
-        setData_polish(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-    const fetchData_symmetry = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_symmetry&col=Code')
-      .then((response) => {
-        setData_symmetry(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-    const fetchData_fluorescene = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_fluorescence&col=Fluorescence')
-      .then((response) => {
-        setData_fluorescene(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_vendor = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=purchase_vendor&col=vendor_id,vendor_name')
-      .then((response) => {
-        setData_vendor(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_intensity = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_intensity&col=Code,FancyColorIntensity')
-      .then((response) => {
-        setData_intensity(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_modifier1 = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_modifier&col=Code,ModifierColor')
-      .then((response) => {
-        setData_modifier1(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-    const fetchData_dominant = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=common&table=t_dominant&col=Code,DominantColor')
-      .then((response) => {
-        setData_dominant(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-
-
-    const fetchData_new = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=getshape')
-      .then((response) => {
-        setData_shape(response.data);
-
-      })
-      .catch((err) => {
-        setError(err.message);
-
-      });
-
-
-    const fetchData_color = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=getcolor')
-      .then((response) => {
-        setData_color(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-
-    const fetchData_lab = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=getlab')
-      .then((response) => {
-        setData_lab(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-
-    const fetchData_clarity = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=getclarity')
-      .then((response) => {
-        setData_clarity(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-
-    const fetchData_size = axios
-      .get('https://' + account + '.diatrac.in/checkAccount.php?act=getsize')
-      .then((response) => {
-        setData_size(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-
-
-
-    //fetchData();
-
-
-
-
-  }, []);
-
-  const apiUrl = 'https://' + account + '.diatrac.in/checkAccount.php?act=getstonediamonds';
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(`${apiUrl}&query=${inputValue}`);
-        setSuggestions(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    const debouncedFetchData = debounce(fetchData, 300);
-
-    if (inputValue) {
-      debouncedFetchData();
-    } else {
-      setSuggestions([]);
-    }
-
-    return () => {
-      // Cleanup function to cancel the debounced function if the component unmounts or inputValue changes quickly
-      debouncedFetchData.cancel();
-    };
-  }, [inputValue, apiUrl]);
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -448,48 +251,7 @@ const DiamondEntry: React.FC = () => {
     return debounced;
   };
 
-
-  const apiUrllab = 'https://' + account + '.diatrac.in/giaController.php';
-  const call_lab = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${apiUrllab}?act=${formData.lab}&reportNo=${formData.certificateNo}&StoneNumber=${inputValue}&weight=${formData.carat}`);
-      //setSuggestions(response.data);
-      call_stone();
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const apiUrlcostcode = 'https://' + account + '.diatrac.in/createCostCode.php';
-  const call_costcode = async () => {
-    setIsLoading(true);
-    try {
-      const newcost = document.getElementById("costCarat").value ? document.getElementById("costCarat").value : formData.costCarat;
-      setData_costcarat(newcost);
-      const response = await axios.get(`${apiUrlcostcode}?costPCt=${newcost}`);
-      //setSuggestions(response.data);
-      //call_stone();
-      setData_costcode(response.data);
-      const cartat = formData.carat;
-      const onhandcost = (Math.round(cartat * newcost * 100) / 100);
-      setData_handCost(onhandcost);
-      setData_totalCost(onhandcost);
-      const totsellp = totsellprice ? totsellprice : 0;
-      const profit = (totsellp - totalCost);
-      setData_profit(profit.toFixed(2));
-      const markupvar = ((totsellp - totalCost) / totalCost) * 100;
-      setData_markup(markupvar.toFixed(2));
-      const margin1 = ((totsellp - totalCost) / totsellp) * 100;
-      setData_margin(margin1.toFixed(2));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  //fetchData();
+  
   const call_sellprice = async () => {
     //setIsLoading(true);
     try {
@@ -509,60 +271,8 @@ const DiamondEntry: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
-  const apiUrlstone = 'https://' + account + '.diatrac.in/checkAccount.php?act=getdiamondsbystone';
-  const call_stone = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${apiUrlstone}&query=${inputValue}`);
-      //setSuggestions(response.data);
-      setFormData(response.data);
-      const resp=response.data;
-      //const newUrls = [...previewUrls];
-    console.log("resp.files[0]",resp.files[0]);
-    //setPreviewUrls(newUrls);
-       //const newUrls = [...previewUrls];
-    const newPreviews = resp.files.map((file: Blob | MediaSource,index:number) => (
-      
-     
-      {
-           
-          file: file,
-            type: index==0?"pdf":index<=3 && index>0?"image/*":"video/mp4",
-            url: file, // Create a temporary URL for preview
-            
-          }
   
-      )  );
-       
-        console.log("newPreviews",newPreviews);
-        // console.log("newPreviews2",newPreviews2);
-        //const newPreviews = [...previews];
-    //newPreviews[index] = file;
-    setPreviews(newPreviews);
-   // setPreviews(newPreviews2);
-    const newUrls = [...previewUrls];
-    newUrls[0] = newPreviews[0].file;
-    newUrls[1] = newPreviews[1].file;
-    newUrls[2] = newPreviews[2].file;
-    newUrls[3] = newPreviews[3].file;
-    newUrls[4] = newPreviews[4].url;
-    setPreviewUrls(newUrls);
-
-    
   
-      
-       // setPreviews(prev => [...prev, ...newPreviews]);
-    
-  
-     
-    
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
   const [showAlert, setShowAlert] = useState(false);
   const [result, setResult] = useState('');
 
@@ -573,24 +283,7 @@ const DiamondEntry: React.FC = () => {
     //console.log(selectedValue);
     // Process form data, e.g., send it to an API
     setLoading(true);
-    try {
-      const response = await axios.post('https://' + account + '.diatrac.in/checkAccount.php?act=savediamonds', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-         });
-      console.log('Data sent successfully:', response.data);
-      const new_jsonData = response.data;//await response.data.json();
-      setResult('Stone Saved Successfully!');
-      setShowAlert(true);
-      //call_stone();
-      //resetForm();
-      // Handle success (e.g., display a success message, redirect)
-    } catch (error) {
-      console.error('Error sending data:', error);
-      setLoading(false);
-      // Handle error (e.g., display an error message)
-    }
+    
 
   };
 
@@ -717,7 +410,7 @@ const DiamondEntry: React.FC = () => {
                 <IonLabel position="fixed">Certificate#</IonLabel>
                 <IonInput placeholder="Enter Certificate#" value={formData.certificateNo} onIonChange={(e) => setFormData({ ...formData, certificateNo: e.detail.value! })} />
                 <IonThumbnail className="thumb-img" slot="end">
-                  <img src="assets/images/egl_usa.jpg" alt="Certificate Client" onClick={call_lab} />
+                  <img src="assets/images/egl_usa.jpg" alt="Certificate Client" />
                 </IonThumbnail>
               </IonItem>
 

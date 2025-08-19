@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import { Redirect, Route } from "react-router-dom";
-import { IonApp, IonRouterOutlet, setupIonicReact, IonContent, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel } from '@ionic/react';
+import { IonApp, setupIonicReact } from '@ionic/react'; //IonRouterOutlet, IonContent, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel
+
 import { IonReactRouter } from '@ionic/react-router';
 import { Preferences } from "@capacitor/preferences";
 import { Keyboard } from '@capacitor/keyboard';
@@ -20,7 +21,7 @@ import WatchEntry from './pages/Watch/WatchEntry/WatchEntry';
 import WatchSearch from './pages/Watch/WatchSearch/WatchSearch';
 
 import Cookies from 'universal-cookie';
-import { CategoryProvider } from './data/categoriesData';
+//import { CategoryProvider } from './data/categoriesData';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -51,14 +52,14 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { JSX } from "react/jsx-runtime";
+//import { JSX } from "react/jsx-runtime";
 
 
 setupIonicReact();
 
 const App: React.FC = () => { 
 
-  const path = window.location.pathname;
+  //const path = window.location.pathname;
   const [showSplash, setShowSplash] = useState(true);
   
   //React Functional Component
@@ -82,41 +83,6 @@ const App: React.FC = () => {
     // Enable scroll when keyboard opens, globally
     Keyboard.setScroll({ isDisabled: false });
   }, []);
-
-  /*
-  // Define pages where menu should be shown
-  const menuPages = [
-    "/dashboard",
-    "/diamondEntry",
-    "/diamondSearch",
-    "/jewelEntry",
-    "/jewelSearch",
-    "/gemEntry",
-    "/gemSearch",
-    "/watchEntry",
-    "/watchSearch",
-  ];
-  const showMenu = menuPages.includes(path);
-
-  type SubCategory = {
-    name: string;
-    iconUrl: string;
-    src: string;
-  };
-  
-  
-  type Category =
-  | {
-      name: string;
-      iconUrl: string;
-      sub: SubCategory[];
-    }
-  | {
-      name: string;
-      iconComponent: JSX.Element;
-    };
-  const [selectedCategories, setSelectedCategories] = useState<Category | null>(null);
-*/
   
 
   return (
@@ -128,15 +94,16 @@ const App: React.FC = () => {
 
         <IonReactRouter>
 
-          <Route exact path="/">
+          {/*<Route exact path="/">
             {storedLoginStatus1 ? <Redirect to="/dashboard" /> : ''  }
           </Route>         
 
           <Route exact path="/">
-            {storedLoginStatus1 ? '' : <Route path="/" exact component={Home} />  }
+            {storedLoginStatus1 ? '' : <Route path="/" exact component={Login} />  }
           </Route>
+          */}
 
-          <Route path="/login" component={Login} />           
+          <Route path="/" exact component={Login} />           
 
           <Route path="/dashboard" component={Dashboard} />
           
@@ -151,69 +118,6 @@ const App: React.FC = () => {
 
           <Route path="/watchEntry" component={WatchEntry} />
           <Route path="/watchSearch" component={WatchSearch} />
-
-          {/* 
-          {showMenu ? (
-            
-            <CategoryProvider>
-            <IonSplitPane contentId="main">
-              <IonMenu menuId="start" contentId="main" side="start" type="overlay">
-                <IonHeader>
-                  <IonToolbar>
-                    <IonTitle>{selectedCategories?.name}</IonTitle>
-                  </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                 
-                  <IonList>
-                    {selectedCategories && "sub" in selectedCategories && selectedCategories.sub.map((sub, idx) => (
-                      <IonItem key={idx}>
-                        <IonLabel>{sub.name}</IonLabel>
-                      </IonItem>
-                    ))}
-                  </IonList>
-                </IonContent>
-              </IonMenu>
-
-              <IonRouterOutlet id="main">
-                
-
-                <Route exact path="/">
-                  {storedLoginStatus1 ? <Redirect to="/dashboard" /> : ''  }
-                </Route>                
-
-                <Route path="/dashboard" component={Dashboard} />
-                
-                <Route path="/diamondEntry" component={DiamondEntry} />
-                <Route path="/diamondSearch" component={DiamondSearch} />
-                
-                <Route path="/jewelEntry" component={JewelEntry} />
-                <Route path="/jewelSearch" component={JewelSearch} />
-
-                <Route path="/gemEntry" component={GemEntry} />
-                <Route path="/gemSearch" component={GemSearch} />
-
-                <Route path="/watchEntry" component={WatchEntry} />
-                <Route path="/watchSearch" component={WatchSearch} />
-              
-              </IonRouterOutlet>
-            </IonSplitPane>
-            </CategoryProvider>
-            
-          ) : (
-          
-            <IonRouterOutlet>
-
-              <Route exact path="/">
-                {storedLoginStatus1 ? '' : <Route path="/" exact component={Home} />  }
-              </Route>
-
-              <Route path="/login" component={Login} />              
-
-            </IonRouterOutlet>
-            
-          )}
-            */}
 
         </IonReactRouter>
 

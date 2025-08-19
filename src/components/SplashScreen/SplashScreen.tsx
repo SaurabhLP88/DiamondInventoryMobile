@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { IonImg, IonText, IonSpinner } from '@ionic/react';
+import { IonImg, IonSpinner } from '@ionic/react'; //IonText,
 import './SplashScreen.css';
 
 const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
@@ -12,7 +12,7 @@ const SplashScreen: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
 
   return (
     <div className="splash-container">
-        <IonImg src="assets/images/diatrac_logo.svg" alt="Diatrac" className="splash-logo" />
+        <IonImg src="./src/assets/images/calcdiamond-01.svg" alt="CalcDiamond" className="splash-logo" />
         <IonSpinner name="crescent" className="splash-spinner" />
     </div>
   );

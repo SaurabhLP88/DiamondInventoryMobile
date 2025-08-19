@@ -7,7 +7,7 @@ ion-item::part(native) {
 .welcome-text {text-align:center;}
 .welcome-text h1 {font-size:20px; font-weight:400; color:#fff; margin:0 0 15px;}
 
-#login-container { background-color: #fff; color: #605D67; min-height: calc(100vh - 245px); border-radius: 25px 25px 0 0; }
+.loginContain { background-color: #fff; color: #605D67; min-height: calc(100vh - 206px); border-radius: 25px 25px 0 0; }
 
 .logo-client-container {display:flex; justify-content:center; align-items:center; margin-top:00px; margin-bottom:10px;}
 .logo-client { width:auto; max-width: 90%; height:auto; max-height: 40px;  }

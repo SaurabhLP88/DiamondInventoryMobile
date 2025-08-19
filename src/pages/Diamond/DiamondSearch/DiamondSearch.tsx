@@ -16,11 +16,7 @@ import './DiamondSearch.css';
 import { IonSpinner } from '@ionic/react';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
 
-
-    
- 
-
-   
+  
 const columnNames = [
   "Stone", "Qty", "Shape", "Carat", "Memo", "CaratOnHand", "Color", "Clarity", "Cut", "Polish", "Symm.",
   "Fluor.", "Measur.", "Depth", "Table", "Girdle", "Culet", "Cert.", "Lab", "RAP", "Cost/PC", "%Sell",
@@ -63,10 +59,7 @@ const DiamondSearch: React.FC = () => {
     // Process form data, e.g., send it to an API
      setLoading(true);
     try {
-      const response = await axios.post('https://'+account+'.diatrac.in/checkAccount.php?act=getdiamonds', formData);
-      console.log('Data sent successfully:', response.data);
-      const new_jsonData = response.data;//await response.data.json();
-      setData(new_jsonData);
+      
       resetForm();
       // Handle success (e.g., display a success message, redirect)
     } catch (error) {
@@ -171,61 +164,6 @@ const DiamondSearch: React.FC = () => {
    
  };
 
-  useEffect(() => {
-    const fetchData_new =axios
-    .get('https://'+account+'.diatrac.in/checkAccount.php?act=getshape')
-    .then((response) => {
-      setData_shape(response.data);
-        setLoading(false);
-    })
-    .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-    });
-
-      
-
-    const fetchData_color =axios
-    .get('https://'+account+'.diatrac.in/checkAccount.php?act=getcolor')
-    .then((response) => {
-      setData_color(response.data);
-        setLoading(false);
-    })
-    .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-    });
-
-    
-    const fetchData_clarity =axios
-    .get('https://'+account+'.diatrac.in/checkAccount.php?act=getclarity')
-    .then((response) => {
-      setData_clarity(response.data);
-        setLoading(false);
-    })
-    .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-    });
-
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://'+account+'.diatrac.in/checkAccount.php?act=getdiamonds');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (e) {
-        setError("");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
   const  TotalQTY = data.reduce((totalquantity, meal) => totalquantity + parseInt(meal.Qty, 10), 0);
   const  TotalCarat = data.reduce((totalCara, meal) => totalCara + parseInt(meal.Carat, 10), 0);
   const  TotSellPrice = data.reduce((totalPrice, meal) => totalPrice + parseInt(meal.TotSellPrice, 10), 0);
@@ -239,31 +177,7 @@ const DiamondSearch: React.FC = () => {
     return <IonContent><p>Error: {error}</p></IonContent>;
   }
   
- const openModal =   async (stone) => {
-  setIsEditDetailsModal(false);
-   setViewDetailsModal(true);
-const apiUrl='https://'+account+'.diatrac.in/checkAccount.php?act=getstonbyid';
-try {
-  console.log(stone);
-      const response = await fetch(`${apiUrl}&stone=${stone}`);
-      const data =  await response.json();
-      console.log(data);
-      setData_details(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-    const apiUrl2='https://'+account+'.diatrac.in/checkAccount.php?act=getstonbyid_other';
-try {
-  console.log(stone);
-      const response = await fetch(`${apiUrl2}&stone=${stone}`);
-      const data2 =  await response.json();
-      console.log(data2);
-      setDataother(data2);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-
-  };
+ 
   const [checkboxValues, setCheckboxValues] = useState({});
   const [showAlert, setShowAlert] = useState(false);
   const [result, setResult] = useState('');
@@ -288,144 +202,15 @@ const [showModal, setShowModal] = useState(false);
   console.log('Error opening file', e);
 }
 }
-  const getCheckedValues = () => {
-        const checkedValues = [];
-        const checkedcerts = [];
-        data.forEach((item) => {
-            if (checkboxValues[item.StoneNumber]) {
-                checkedValues.push(item.StoneNumber);
-                checkedcerts.push(document.getElementById(item.StoneNumber).value);
-            }
-        });
-        if(checkedValues.length<=0){
-          
-           setResult('Please select atleast one Checkbox!');
-          setShowAlert(true);
-          
-        }
-        else{
-             const apiUrl3='https://'+account+'.diatrac.in/showSelectedCerts.php?act=savePDF';
-         try {
-
-    const response =  axios.post(apiUrl3, checkedcerts);
-    console.log('Response:', response.data);
-          setWebViewUrl('https://'+account+'.diatrac.in/upload/certImg/merged-pdf.pdf');
-          // setShowModal(true);
-          window.open('https://'+account+'.diatrac.in/upload/certImg/merged-pdf.pdf', "_system");
-    // Handle success (e.g., show a success message, update state)
-  } catch (error) {
-    console.error('Error:', error);
-    // Handle errors (e.g., show an error message, log the error)
-  }
-
-
-          
-
-
-        }
-        console.log("Checked values:", checkedValues);
-        console.log("Checked checkedcerts:", checkedcerts);
-    };
-
-
-    const getCheckedlabel = () => {
-        const checkedValues1 = [];
-        //const checkedcerts = [];
-        data.forEach((item) => {
-            if (checkboxValues[item.StoneNumber]) {
-                checkedValues1.push(item.StoneNumber);
-                //checkedcerts.push(document.getElementById(item.StoneNumber).value);
-            }
-        });
-        if(checkedValues1.length<=0){
-          
-           setResult('Please select atleast one Checkbox!');
-          setShowAlert(true);
-          
-        }
-        else{
-          //const trimval=checkedValues1.trim();
-          const diamonddata=checkedValues1.join('^');
-          const newdiamonddata=diamonddata.replace(/\s+/g, "");
-             const apiUrl4='https://'+account+'.diatrac.in/accountingAct/generateReportsController1.php?act=printLabel&page=search';
-          setWebViewUrl(`${apiUrl4}&diamonds=${newdiamonddata}`);
-           window.open(`${apiUrl4}&diamonds=${newdiamonddata}`, "_system");
-          // setShowModal(true);
-            console.log("apiUrl4 apiUrl4:", `${apiUrl4}&diamonds=${newdiamonddata}`);
-        }
-        console.log("Checked values2:", checkedValues1);
-       
-    };
-
-    const getCheckedtags = () => {
-        const checkedValues2 = [];
-        //const checkedcerts = [];
-        data.forEach((item) => {
-            if (checkboxValues[item.StoneNumber]) {
-                checkedValues2.push(item.StoneNumber);
-                //checkedcerts.push(document.getElementById(item.StoneNumber).value);
-            }
-        });
-        if(checkedValues2.length<=0){
-          
-           setResult('Please select atleast one Checkbox!');
-          setShowAlert(true);
-          
-        }
-        else{
-          //const trimval=checkedValues1.trim();
-          const diamonddata1=checkedValues2.join('^');
-          const newdiamonddata1=diamonddata1.replace(/\s+/g, "");
-             const apiUrl5='https://'+account+'.diatrac.in/TagPrintPopup.php?pageId=DiamondSearchApp';
-          setWebViewUrl(`${apiUrl5}&diamonds=${newdiamonddata1}`);
-          //window.open(`${apiUrl5}&diamonds=${newdiamonddata1}`, "_system");
-           setShowModal(true);
-            console.log("apiUrl4 apiUrl4:", `${apiUrl5}&diamonds=${newdiamonddata1}`);
-        }
-        console.log("Checked values2:", checkedValues2);
-       
-    };
-
-    const getCheckedhistory = () => {
-        const checkedValues3 = [];
-        //const checkedcerts = [];
-        data.forEach((item) => {
-            if (checkboxValues[item.StoneNumber]) {
-                checkedValues3.push(item.StoneNumber);
-                //checkedcerts.push(document.getElementById(item.StoneNumber).value);
-            }
-        });
-        if(checkedValues3.length<=0){
-          
-           setResult('Please select atleast one Checkbox!');
-          setShowAlert(true);
-          
-        }
-        else{
-          //const trimval=checkedValues1.trim();
-          const diamonddata3=checkedValues3.join('^');
-          const newdiamonddata13=diamonddata3.replace(/\s+/g, "");
-             const apiUrl6='https://'+account+'.diatrac.in/reports/generateSearchHistoryReports.php?act=searchHistory';
-          setWebViewUrl(`${apiUrl6}&items=${newdiamonddata13}`);
-          window.open(`${apiUrl6}&items=${newdiamonddata13}`, "_system");
-           //setShowModal(true);
-            console.log("apiUrl4 apiUrl4:", `${apiUrl6}&items=${newdiamonddata13}`);
-        }
-        console.log("Checked values2:", checkedValues3);
-       
-    };
-
-
-
-
+  
 
 
     const diamondSearchTabs = [
     { tab: "home", href: "/home", icon: <PiListNumbers className="icon" />, label: "Num. All" },
-    { tab: "search", href: "/search", icon: <GoHistory className="icon" />, label: "History" , clickname:getCheckedhistory },
-    { tab: "add", href: "/add", icon: <GrTag className="icon" />, label: "Print Tag" , clickname:getCheckedtags },
-    { tab: "likes", href: "/likes", icon: <PiScroll className="icon" />, label: "Print Label" , clickname:getCheckedlabel },
-    { tab: "profile", href: "/profile", icon: <GrCertificate className="icon" />, label: "Print Cert." , clickname:getCheckedValues }
+    { tab: "search", href: "/search", icon: <GoHistory className="icon" />, label: "History"  },
+    { tab: "add", href: "/add", icon: <GrTag className="icon" />, label: "Print Tag"  },
+    { tab: "likes", href: "/likes", icon: <PiScroll className="icon" />, label: "Print Label" },
+    { tab: "profile", href: "/profile", icon: <GrCertificate className="icon" />, label: "Print Cert." }
   ];
 
   return (

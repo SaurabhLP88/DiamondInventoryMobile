@@ -190,9 +190,7 @@ const handleCategoryClick = (category: string) => {
 
           {/* Logo on the Left */}
           <div className="logo-with-text">
-            {/*{isDashboard && (
-              <IonImg src="assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
-            )} */}
+            
             <span className="logo-text"> {pageTitle}</span>
           </div>          
 

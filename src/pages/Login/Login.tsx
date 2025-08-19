@@ -2,23 +2,14 @@ import { useState} from "react";
 import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText, IonIcon } from '@ionic/react';
 import LoginContainer from "../../components/LoginContainer/LoginContainer";
 import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVerification";
+import HomeContainer from "../../components/LoginContainer/HomeContainer";
 import './Login.css';
 import { useHistory } from "react-router-dom";
-import Cookies from 'universal-cookie';
 
 const Login: React.FC = () => {
-  const cookies = new Cookies();
-  const [showVerification, setShowVerification] = useState(false);
-  const [dashboardVisible, setDashboardVisible] = useState(false);
-  
-  const storedSessionId = sessionStorage.getItem('login_id');
-  const newstoreid=storedSessionId?storedSessionId:cookies.get('login_id');
-  const verify_code = sessionStorage.getItem('verify_code');
-  const new_verificode=verify_code?verify_code:cookies.get('verify_code');
-  //alert(verify_code);
-const history = useHistory(); 
-
-
+ 
+  const [step, setStep] = useState<"home" | "login" | "verify">("home");
+  const history = useHistory();
 
   return (
     <IonPage>
@@ -28,44 +19,53 @@ const history = useHistory();
         <div className="ion-padding">
           {/* Logo */}
           <div className="logo-container">
-            <IonImg src="assets/images/diatrac_logo.svg" alt="Diatrac" className="logo" />
+            <IonImg src="./src/assets/images/calcdiamond-01.svg" alt="CalcDiamond" className="logo" />
           </div>
 
           {/* Welcome Text */}
           <IonText className="welcome-text">
-            <h1>Welcome To DiaTrac Solutions</h1>
+            <h1>Welcome To CalcDiamond</h1>
           </IonText>
         </div>
        
        
-                <div id="login-container" className="ion-padding">
+        <div id="login-container" className="loginContain ion-padding">
+            {step === "home" && (
+              <HomeContainer onAccountSuccess={() => setStep("login")} /> 
+            )}
+
+            {step === "login" && (
+              <LoginContainer onBack={() => setStep("home")}  onLoginSuccess={() => setStep("verify")} />
+            )}
+
+            {step === "verify" && (
+              <TwoStepVerification onBack={() => setStep("login")} onVerifySuccess={() => history.push("/dashboard")}
+              />
+            )}
 
 
-                    {!new_verificode ? (
-                      
-                      <>
-                        <LoginContainer onLoginSuccess={() => setShowVerification(true)} />
-                      </>
-                    ) : (
-                      <>
-                        <TwoStepVerification onBack={() => setShowVerification(false)} onVerifySuccess={() => setDashboardVisible(true)}  />
-                      </>
-                    )}
+            {/*
+            {!showVerification ? (
+              
+              <>
+                <LoginContainer onLoginSuccess={() => setShowVerification(true)} /> 
+              </>
+            ) : (
+              <>
+                <TwoStepVerification onBack={() => setShowVerification(false)} onVerifySuccess={() => setDashboardVisible(true)}  />
+              </>
+            )}
+              */}
 
 
-
-
-
-
-
-</div>
+      </div>
 
       </IonContent>
 
       <IonFooter className="ion-no-border">
         <IonToolbar className="footer-toolbar">
         <p>
-          By using DiaTrac Solutions, you agree to the  <IonRouterLink className="custom-link1" routerLink="/terms">Terms</IonRouterLink> and <IonRouterLink className="custom-link1" routerLink="/privacy-policy">Privacy Policy</IonRouterLink>.
+          By using CalcDiamond, you agree to the  <IonRouterLink className="custom-link1" routerLink="/terms">Terms</IonRouterLink> and <IonRouterLink className="custom-link1" routerLink="/privacy-policy">Privacy Policy</IonRouterLink>.
         </p>
         </IonToolbar>
       </IonFooter>
