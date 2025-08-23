@@ -16,7 +16,7 @@ import diamondImg from "@/assets/images/diamond1.svg";
 import gemImg from "@/assets/images/gem1.svg";
 import jewelImg from "@/assets/images/jewelry1.svg";
 import watchImg from "@/assets/images/watch1.svg";
-import qouteImg from "@/assets/images/qoute1.svg";
+import qouteImg from "@/assets/images/quote1.svg";
 import memoImg from "@/assets/images/memo1.svg";
 import invoiceImg from "@/assets/images/invoice1.svg";
 import paymentsImg from "@/assets/images/payments1.svg";
