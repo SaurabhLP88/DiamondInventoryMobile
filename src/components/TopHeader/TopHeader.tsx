@@ -12,6 +12,19 @@ import Cookies from 'universal-cookie';
 //import { useCategory } from '../../data/categoriesData';
 //import { CategoryType } from '../../data/categoriesData';
 
+import diamondImg from "@/assets/images/diamond1.svg";
+import gemImg from "@/assets/images/gem1.svg";
+import jewelImg from "@/assets/images/jewelry1.svg";
+import watchImg from "@/assets/images/watch1.svg";
+//import qouteImg from "@/assets/images/quote1.svg";
+import memoImg from "@/assets/images/memo1.svg";
+import invoiceImg from "@/assets/images/invoice1.svg";
+import paymentsImg from "@/assets/images/payments1.svg";
+import memoinImg from "@/assets/images/memo12.svg";
+import receiveinImg from "@/assets/images/receiving1.svg";
+//import expensesImg from "@/assets/images/expenses1.svg";
+//import bankImg from "@/assets/images/bank_register1.svg";
+
 interface TopHeaderProps {
   pageTitle: string;
 }
@@ -21,95 +34,95 @@ const TopHeader: React.FC<TopHeaderProps> = ({ pageTitle }) => {
 const categories = [
   { 
     name: 'Diamonds', 
-    iconUrl: 'assets/images/diamond1.svg', 
+    iconUrl: diamondImg, 
     sub: [
         {
         name: 'Diamond Entry',
-        iconUrl: 'assets/images/diamond1.svg',
+        iconUrl: diamondImg,
         src: '/diamondEntry'
       }, 
       {
         name: 'Diamond Search',
-        iconUrl: 'assets/images/diamond1.svg',
+        iconUrl: diamondImg,
         src: '/diamondSearch'
       }
     ]
   },
   { 
     name: 'Gems', 
-    iconUrl: 'assets/images/gem1.svg', 
+    iconUrl: gemImg, 
     sub: [
       {
         name: 'Gem Entry',
-        iconUrl: 'assets/images/gem1.svg',
+        iconUrl: gemImg,
         src: '/gemEntry'
       },
       {
         name: 'Gem Search',
-        iconUrl: 'assets/images/gem1.svg',
+        iconUrl: gemImg,
         src: '/gemSearch'
       }
     ]
   },
   { 
     name: 'Jewels', 
-    iconUrl: 'assets/images/jewelry1.svg', 
+    iconUrl: jewelImg, 
     sub: [
       {
         name: 'Jewel Entry',
-        iconUrl: 'assets/images/jewelry1.svg',
+        iconUrl: jewelImg,
         src: '/jewelEntry'
       },
       {
         name: 'Jewel Search',
-        iconUrl: 'assets/images/jewelry1.svg',
+        iconUrl: jewelImg,
         src: '/jewelSearch'
       }
     ]
   },
   { 
     name: 'Watch', 
-    iconUrl: 'assets/images/watch1.svg', 
+    iconUrl: watchImg, 
     sub: [
       {
         name: 'Watch Entry',
-        iconUrl: 'assets/images/watch1.svg',
+        iconUrl: watchImg,
         src: '/watchEntry'
       },
       {
         name: 'Watch Search',
-        iconUrl: 'assets/images/watch1.svg',
+        iconUrl: watchImg,
         src: '/watchSearch'
       }
     ]
   },
   { 
     name: 'Accounting', 
-    iconUrl: 'assets/images/invoice1.svg', 
+    iconUrl: invoiceImg, 
     sub: [
       {
         name: 'Invoice',
-        iconUrl: 'assets/images/invoice1.svg',
+        iconUrl: invoiceImg,
         src: '/jewelEntry'
       },
       {
         name: 'Memo',
-        iconUrl: 'assets/images/invoice1.svg',
+        iconUrl: memoImg,
         src: '/jewelEntry'
       }
     ]
   },
   { 
     name: 'Purchase', 
-    iconUrl: 'assets/images/memo12.svg', 
+    iconUrl: paymentsImg, 
     sub: [
       {
-        name: 'Receive In',
+        name: receiveinImg,
         iconUrl: 'assets/images/memo12.svg',
         src: '/jewelEntry'
       },
       {
-        name: 'Memo In',
+        name: memoinImg,
         iconUrl: 'assets/images/memo12.svg',
         src: '/jewelEntry'
       }
