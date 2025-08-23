@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 //import { useHistory } from "react-router-dom";
 import { IonImg, IonContent, IonItem, IonInput, IonButton, IonText, IonRow, IonCol } from '@ionic/react';
 import './TwoStepVerification.css';
-
+import logo from "@/assets/images/egl_usa.jpg";
 
 interface VerificationProps { 
   onBack: () => void;
@@ -34,7 +34,7 @@ const TwoStepVerification: React.FC<VerificationProps> = ({ onBack, onVerifySucc
     <div id="access-container">
 
       <div className="logo-client-container">
-        <IonImg src="/src/assets/images/client_logo.svg" alt="Client Logo" className="logo-client" />
+        <IonImg src={logo} alt="Client Logo" className="logo-client" />
       </div>
 
       <h1 className="login-heading"> Two-Step Verification</h1>
