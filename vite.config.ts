@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     legacy()
   ],
-  //base: '/DiamondInventoryMobile/',
+  base: process.env.NODE_ENV === 'production' ? '/DiamondInventoryMobile/' : '/', 
   test: {
     globals: true,
     environment: 'jsdom',
