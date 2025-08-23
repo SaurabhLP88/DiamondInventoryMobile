@@ -106,7 +106,11 @@ const App: React.FC = () => {
           </Route>
           */}
 
-          <Route path="/" exact component={Login} />  
+          <Route path="/" exact 
+          component={() => {
+        console.log("Login route triggered");
+        return <Login />;
+      }}  />  
           {/*<Redirect exact from="*" to="/" />*/}
 
           <Route path="/dashboard" component={Dashboard} />
