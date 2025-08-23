@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import { IonImg, IonContent, IonItem, IonInput, IonButton, IonText, IonIcon } from '@ionic/react';
+import { IonImg,  IonItem, IonInput, IonButton, IonText, IonIcon } from '@ionic/react'; //IonContent,
 import './LoginContainer.css';
-import { useHistory } from "react-router-dom";
+//import { useHistory } from "react-router-dom";
 import { eye, eyeOff } from 'ionicons/icons';
 // 
 
@@ -12,8 +12,8 @@ interface ContainerProps {
 
 const LoginContainer: React.FC<ContainerProps> = ({ onLoginSuccess, onBack }) => {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  /*const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");*/
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   //const [password, setPassword] = useState('');

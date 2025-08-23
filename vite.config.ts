@@ -10,7 +10,7 @@ export default defineConfig({
     react(),
     legacy()
   ],
-  base: '/DiamondInventoryMobile/',
+  //base: '/DiamondInventoryMobile/',
   test: {
     globals: true,
     environment: 'jsdom',

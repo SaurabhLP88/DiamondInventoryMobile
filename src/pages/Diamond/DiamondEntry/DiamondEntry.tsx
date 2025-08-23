@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { IonPage, IonContent, IonLoading, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonButtons, IonThumbnail, IonPopover, IonDatetime, IonCheckbox, IonImg, IonModal, IonHeader, IonToolbar, IonTitle, useIonAlert } from '@ionic/react';
+import { IonPage, IonContent,  IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonButtons, IonThumbnail, IonPopover, IonDatetime, IonCheckbox, IonImg, IonModal, IonHeader, IonToolbar, IonTitle, useIonAlert, InputChangeEventDetail } from "@ionic/react"; //IonLoading,
+import type { IonInputCustomEvent } from "@ionic/core";
 import { HexColorPicker } from "react-colorful";
 import { useSwipeable } from 'react-swipeable';
 
@@ -13,9 +14,63 @@ import { GrTag } from "react-icons/gr";
 import TopHeader from '../../../components/TopHeader/TopHeader';
 import BottomNavigation from '../../../components/BottomNavs/BottomNavs';
 import './DiamondEntry.css';
-import Cookies from 'universal-cookie';
+/*import Cookies from 'universal-cookie';
 
-const DiamondEntry: React.FC = () => {
+interface FormData {
+  profit: string;
+  markup: string;
+  margin: string;
+  stoneRadio: string | null;
+}*/
+
+interface Intensity {
+  Code: string;
+  FancyColorIntensity: string;
+}
+interface Modifier {
+  Code: string;
+  ModifierColor: string;
+}
+interface Dominant {
+  Code: string;
+  DominantColor: string;
+}
+
+type Vendor = {
+  vendor_id: string;
+  vendor_name: string;
+};
+
+type CodeItem = {
+  Code: string;
+};
+
+type FluorescenceItem = {
+  Fluorescence: string;
+};
+
+interface Lab {
+  Code: string;
+}
+
+interface Shape {
+  Code: string;
+  ShapeDescription: string;
+}
+
+interface Color {
+  Code: string;
+}
+
+interface Clarity {
+  Code: string;
+}
+
+interface SizeOption {
+  Size: string;
+}
+
+const DiamondEntry: React.FC = () => {  
 
   const diamondEntryTabs = [
     //{ tab: "home", href: "/home", icon: <AiOutlineFileAdd className="icon" />, label: "New" },    
@@ -94,10 +149,61 @@ const DiamondEntry: React.FC = () => {
     { title: 'Upload Video', description: 'Add your Video here' },
   ];
 
-  const uploadCount = uploadBoxes.length; // how many upload sections you want
+  // const uploadCount = uploadBoxes.length; // how many upload sections you want
+
+  const [profit] = useState<string>("");
+  const [markup] = useState<string>("");
+  const [margin] = useState<string>("");
+  const [totsellprice] = useState<string>("");
+  const [costcodedata] = useState<string>("");
+  const [handCost] = useState<string>("");
+  
+  const [costcarat] = useState<string>("");
+    
+
   const [previews, setPreviews] = useState<(File | null)[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const [intensitydata, setIntensitydata] = useState<Intensity[]>([]);
+  const [modifier1data, setModifier1data] = useState<Modifier[]>([]);
+  const [dominantdata, setDominantdata] = useState<Dominant[]>([]);
+
+  const [vendordata] = useState<Vendor[]>([]);
+
+  const [girdledata] = useState<CodeItem[]>([]);
+  const [culetdata] = useState<CodeItem[]>([]);
+  const [polishdata] = useState<CodeItem[]>([]);
+  const [symmetrydata] = useState<CodeItem[]>([]);
+  const [fluorescenedata] = useState<FluorescenceItem[]>([]);
+  const [sizedata] = useState<SizeOption[]>([
+    { Size: "Small" },
+    { Size: "Medium" },
+    { Size: "Large" }
+  ]);
+
+  const [labdata] = useState<Lab[]>([]);
+  const [shapedata] = useState<Shape[]>([]);
+  const [colordata] = useState<Color[]>([]);
+  const [claritydata] = useState<Clarity[]>([]);
+
+  useEffect(() => {
+    setDominantdata([
+      { Code: "D", DominantColor: "Colorless" },
+      { Code: "E", DominantColor: "Near Colorless" },
+      { Code: "F", DominantColor: "Faint Yellow" },
+    ]);
+    setModifier1data([
+      { Code: "M1", ModifierColor: "Brown" },
+      { Code: "M2", ModifierColor: "Yellow" },
+      { Code: "M3", ModifierColor: "Gray" },
+    ]);
+    setIntensitydata([
+      { Code: "FI1", FancyColorIntensity: "Faint" },
+      { Code: "FI2", FancyColorIntensity: "Light" },
+      { Code: "FI3", FancyColorIntensity: "Intense" },
+    ]);
+  }, []);
 
   const openFilePicker = (index: number) => {
     fileInputRefs.current[index]?.click();
@@ -161,13 +267,13 @@ const DiamondEntry: React.FC = () => {
     lastImportCost: '',
     costCarat: '',
     handCost: '',
-    totalCost: '',
     costOffRap: '',
     rapPrice: '',
     sellPriceCarat: '',
     sellOffRap: '',
     totalSellPrice: '',
     code: '',
+    totalCost: '',
     profit: '',
     markup: '',
     margin: '',
@@ -183,128 +289,108 @@ const DiamondEntry: React.FC = () => {
 
     // Color Inputs
     pantoneColor: '',
+    totsellprice: "",
+    costcodedata: "",
+    costcarat: ""
   });
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+
+
+  /* const handleChange = (e: { target: { name: any; value: any; }; }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const cookies = new Cookies();
   const account_type = sessionStorage.getItem('account_type');
-  const account = account_type ? account_type : cookies.get('account_type');
+ const account = account_type ? account_type : cookies.get('account_type');
   const [loading, setLoading] = useState(true);
-  const [shapedata, setData_shape] = useState([]);
-  const [colordata, setData_color] = useState([]);
-  const [claritydata, setData_clarity] = useState([]);
-  const [labdata, setData_lab] = useState([]);
-  const [girdledata, setData_girdle] = useState([]);
-  const [costcodedata, setData_costcode] = useState([]);
-  const [culetdata, setData_culet] = useState([]);
-  const [polishdata, setData_polish] = useState([]);
-  const [symmetrydata, setData_symmetry] = useState([]);
-  const [fluorescenedata, setData_fluorescene] = useState([]);
-  const [vendordata, setData_vendor] = useState([]);
   const [customerdata, setData_customer] = useState([]);
-  const [intensitydata, setData_intensity] = useState([]);
-  const [modifier1data, setData_modifier1] = useState([]);
   const [modifier2data, setData_modifier2] = useState([]);
-  const [dominantdata, setData_dominant] = useState([]);
-  const [fancycodedata, setData_fancycode] = useState([]);
-  const [costcarat, setData_costcarat] = useState([]);
-  const [handCost, setData_handCost] = useState([]);
-  const [totalCost, setData_totalCost] = useState([]);
-  const [profit, setData_profit] = useState([]);
-  const [markup, setData_markup] = useState([]);
-  const [margin, setData_margin] = useState([]);
-  const [totsellprice, setData_totsellprice] = useState([]);
+  const [fancycodedata, setData_fancycode] = useState([]);*/
+  const [totalCost] = useState([]);
 
-  const [sizedata, setData_size] = useState([]);
-  const [error, setError] = useState("");
-  const [data, setData] = useState([]);
+  /*const [error, setError] = useState("");
+  const [data, setData] = useState([]);*/
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
-
-
-
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    setFormData({ ...formData, stoneNo: event.target.value });
+  const handleIonChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
+    const value = event.detail.value || "";
+    setInputValue(value);
+    setFormData({ ...formData, stoneNo: value });
   };
 
-  const handleSuggestionClick = (suggestion) => {
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
+    console.log("Key pressed:", event.key);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
     setSuggestions([]);
     setInputValue(suggestion);
-    call_stone();
-
   };
 
-  const debounce = (func, delay) => {
-    let timeoutId;
-    const debounced = (...args) => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => func(...args), delay);
-    };
-    debounced.cancel = () => {
-      clearTimeout(timeoutId);
-    };
-    return debounced;
-  };
+  //const input = document.getElementById("sellPriceCarat") as HTMLInputElement | null;
+  //const sell = input?.value ? Number(input.value) : Number(formData.sellPriceCarat);
+  const [, setData_totsellprice] = useState<number>(0);
+  const [, setData_profit] = useState<string>("0");
+  const [, setData_markup] = useState<string>("0");
+  const [, setData_margin] = useState<string>("0");
+  
+
+const call_sellprice = async () => {
+  try {
+    const cartat = Number(formData.carat);
+
+    const input = document.getElementById("sellPriceCarat") as HTMLInputElement | null;
+    const sell = input?.value ? Number(input.value) : Number(formData.sellPriceCarat);
+
+    const totalsellP = Math.round(Number(cartat) * Number(sell));
+    setData_totsellprice(totalsellP);
+
+    const cost = Number(totalCost);
+
+    const profit = totalsellP - cost;
+    setData_profit(profit.toFixed(2));
+
+    const markupvar = ((totalsellP - cost) / cost) * 100;
+    setData_markup(markupvar.toFixed(2));
+
+    const margin1 = ((totalsellP - cost) / totalsellP) * 100;
+    setData_margin(margin1.toFixed(2));
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 
   
-  const call_sellprice = async () => {
-    //setIsLoading(true);
-    try {
-
-      const cartat = formData.carat;
-      const sell = document.getElementById("sellPriceCarat").value ? document.getElementById("sellPriceCarat").value : formData.sellPriceCarat;
-      const totalsellP = (Math.round(cartat * sell));
-      setData_totsellprice(totalsellP);
-
-      const profit = (totalsellP - totalCost);
-      setData_profit(profit.toFixed(2));
-      const markupvar = ((totalsellP - totalCost) / totalCost) * 100;
-      setData_markup(markupvar.toFixed(2));
-      const margin1 = ((totalsellP - totalCost) / totalsellP) * 100;
-      setData_margin(margin1.toFixed(2));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
   
-  
-  const [showAlert, setShowAlert] = useState(false);
-  const [result, setResult] = useState('');
+  /*const [showAlert, setShowAlert] = useState(false);
+  const [result, setResult] = useState('');*/
 
-  const handleSubmitnew = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    console.log("formData", formData);
-    //console.log(selectedButtons); // Log all form data
-    //console.log(selectedValue);
-    // Process form data, e.g., send it to an API
-    setLoading(true);
-    
+  const handleSubmitnew = (e: React.MouseEvent<HTMLIonButtonElement> | undefined) => {
+  e?.preventDefault();
+  console.log("Form submitted!");
+};
 
-  };
 
   const [intensityValue, setintensityValue] = useState('');
   const [modifier1Value, setmodifier1Value] = useState('');
   const [modifier2Value, setmodifier2Value] = useState('');
   const [dominantValue, setdominantValue] = useState('');
 
-  const handleintenseChange = (e) => {
-    setintensityValue(e.detail.value);
+  const handleintenseChange = (e: any) => {
+    setintensityValue(e.detail.value!);
     console.log('Selected value:', e.detail.value); // You can perform other actions here
   };
-  const handlemodifier1Change = (e) => {
+  const handlemodifier1Change = (e: any) => {
     setmodifier1Value(e.detail.value);
     console.log('Selected value:', e.detail.value); // You can perform other actions here
   };
-  const handlemodifier2Change = (e) => {
+  const handlemodifier2Change = (e: any) => {
     setmodifier2Value(e.detail.value);
     console.log('Selected value:', e.detail.value); // You can perform other actions here
   };
-  const handledominantChange = (e) => {
+  const handledominantChange = (e: any) => {
     setdominantValue(e.detail.value);
     console.log('Selected value:', e.detail.value); // You can perform other actions here
   };
@@ -378,7 +464,7 @@ const DiamondEntry: React.FC = () => {
 
               <IonItem className='autocomplete-item'>
                 <IonLabel position="fixed">Stone#</IonLabel>
-                <IonInput className="autocomplete-input" value={inputValue || formData.stoneNo} onKeyUp={handleInputChange} onIonChange={handleInputChange} />
+                <IonInput className="autocomplete-input" value={inputValue || formData.stoneNo} onIonChange={handleIonChange} onKeyUp={handleKeyUp}/>
                 {isLoading && <div>Loading...</div>}
               </IonItem>
 
@@ -504,7 +590,11 @@ const DiamondEntry: React.FC = () => {
               <IonItem>
                 <IonLabel position="fixed">Stone Ratio</IonLabel>
 
-                <IonInput placeholder="Enter Stone Ratio " value={formData.stoneRadio} onIonChange={(e) => setFormData({ ...formData, stoneRadio: e.detail.value })} />
+                <IonInput placeholder="Enter Stone Ratio " 
+                value={formData.stoneRadio ?? ""}
+                onIonChange={(e) =>
+                  setFormData({ ...formData, stoneRadio: e.detail.value as string })
+                } />
               </IonItem>
 
               <div style={{ position: "relative" }}>
@@ -752,9 +842,7 @@ const DiamondEntry: React.FC = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Cost / CT</IonLabel>
-                <IonInput placeholder="Enter Cost / CT" id='costCarat' value={costcarat || formData.costCarat} onIonChange={(e) => setFormData({ ...formData, costCarat: e.detail.value! })} onChange={(e) => {
-                  call_costcode();
-                }} />
+                <IonInput placeholder="Enter Cost / CT" id='costCarat' value={costcarat || formData.costCarat} onIonChange={(e) => setFormData({ ...formData, costCarat: e.detail.value! })} />
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Cost Code</IonLabel>
@@ -766,7 +854,12 @@ const DiamondEntry: React.FC = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Total Cost</IonLabel>
-                <IonInput placeholder="Enter Total Cost" value={totalCost || formData.totalCost} onIonChange={(e) => setFormData({ ...formData, totalCost: e.detail.value! })} />
+                <IonInput placeholder="Enter Total Cost" 
+                value={formData.totalCost || ""} 
+                onIonChange={(e) =>
+                  setFormData({ ...formData, totalCost: e.detail.value! })
+                }
+                />
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Cost % off RAP</IonLabel>
@@ -778,9 +871,14 @@ const DiamondEntry: React.FC = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Sell Price / CT  <IonIcon icon={informationCircleOutline}  onClick={() => sellPriceSetShowModal(true)} className='cursor-pointer' /></IonLabel>
-                <IonInput placeholder="Enter Sell Price / CT" id="sellPriceCarat" value={formData.sellPriceCarat} onIonChange={(e) => setFormData({ ...formData, sellPriceCarat: e.detail.value! })} onChange={(e) => {
+                <IonInput placeholder="Enter Sell Price / CT" id="sellPriceCarat" value={formData.sellPriceCarat} 
+                onIonChange={(e) =>
+                  setFormData({ ...formData, sellPriceCarat: e.detail.value ?? "" })
+                }
+                onChange={() => {
                   call_sellprice();
-                }} />
+                }}
+                />
               </IonItem>
               <IonItem>
                 <IonLabel position="fixed">Sell % off RAP <IonIcon icon={informationCircleOutline}  onClick={() => sellPriceSetShowModal(true)} className='cursor-pointer' /></IonLabel>
@@ -826,7 +924,7 @@ const DiamondEntry: React.FC = () => {
                         <IonLabel className="upload-text">Upload your file</IonLabel>
 
                         {previews[index] && previews[index].type.startsWith('video') ? (
-                          <video className="preview-video" controls width="100%" key={previews[index]}>
+                          <video className="preview-video" controls width="100%">
                             <source src={previewUrls[index] || URL.createObjectURL(previews[index])} type={previews[index]?.type} />
                             Your browser does not support the video tag.
                           </video>
@@ -891,7 +989,7 @@ const DiamondEntry: React.FC = () => {
             </IonCol>
 
             <IonCol size="auto">
-              <IonButton onClick={() => handleSubmitnew(event)}>Save & Next</IonButton> {/* disabled={currentStep === steps.length - 1} */}
+              <IonButton onClick={(e) => handleSubmitnew(e)}>Save & Next</IonButton> {/* disabled={currentStep === steps.length - 1} */}
             </IonCol>
 
           </IonRow>

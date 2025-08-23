@@ -51,7 +51,7 @@ const JewelEntry: React.FC = () => {
     setCurrentStep(index);
   };
 
-  const [numberInput, setNumberInput] = useState(0);
+  /*const [numberInput, setNumberInput] = useState(0);
 
   const [colorPalette, setColorPalette] = useState("#ff0000");
   const [tempColor, setTempColor] = useState(colorPalette);
@@ -66,15 +66,15 @@ const JewelEntry: React.FC = () => {
   const applyColor = () => {
     setColorPalette(tempColor);
     setShowPicker(false);
-  };
+  };*/
 
   const [selectedDate, setSelectedDate] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
   const triggerRef = useRef(null);
 
-  const optionsDefault = [
+  /*const optionsDefault = [
     "N", "LD", "IRR", "CE", "COL", "HPHT", "CVD"
-  ];
+  ];*/
 
   const uploadBoxes = [
     { title: 'Stone Certificate', description: 'Add your Stone Certificate here' },
@@ -84,7 +84,7 @@ const JewelEntry: React.FC = () => {
     { title: 'Upload Video', description: 'Add your Video here' },
   ];
 
-  const uploadCount = uploadBoxes.length; // how many upload sections you want
+  // const uploadCount = uploadBoxes.length; // how many upload sections you want
   const [previews, setPreviews] = useState<(File | null)[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);

@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonPopover, IonDatetime, IonImg, IonTextarea, IonThumbnail, IonButtons } from '@ionic/react';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, IonIcon, IonList, IonItem, IonLabel, IonInput, IonItemDivider, IonSelect, IonSelectOption, IonPopover, IonDatetime, IonImg, IonTextarea,  IonButtons } from '@ionic/react'; //IonThumbnail,
 import { HexColorPicker } from "react-colorful";
 
 import { chevronBack, chevronForward, calendarOutline, informationCircleOutline, removeOutline, addOutline } from "ionicons/icons";
@@ -74,9 +74,9 @@ const GemEntry: React.FC = () => {
   const [showCalendarPurchase, setShowCalendarPurchase] = useState(false);
   const triggerRef = useRef(null);
 
-  const optionsDefault = [
+  /*const optionsDefault = [
     "N", "LD", "IRR", "CE", "COL", "HPHT", "CVD"
-  ];
+  ];*/
 
   const uploadBoxes = [
     { title: 'Gem Image', description: 'Add your Gem Image here' },
@@ -85,7 +85,7 @@ const GemEntry: React.FC = () => {
     { title: 'Upload Video', description: 'Add your Video here' },
   ];
 
-  const uploadCount = uploadBoxes.length; // how many upload sections you want
+  //const uploadCount = uploadBoxes.length; // how many upload sections you want
   const [previews, setPreviews] = useState<(File | null)[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);

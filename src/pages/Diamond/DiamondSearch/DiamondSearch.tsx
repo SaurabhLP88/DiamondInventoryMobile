@@ -1,20 +1,21 @@
 
-import { useRef, useState , useEffect, constructor} from "react";
-import { IonPage, IonContent,IonAlert, IonButton,IonLoading, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonSegment, IonSegmentButton, IonGrid, IonSelect, IonSelectOption, IonRadio, IonInput, IonRadioGroup, IonText  } from '@ionic/react';
-import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, addOutline, close } from "ionicons/icons";
+import { useRef, useState } from "react"; //useEffect
+import { IonPage, IonContent,IonAlert, IonButton,IonLoading, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonSegment, IonSegmentButton, IonGrid, IonSelect, IonSelectOption, IonRadio, IonInput, IonRadioGroup, IonText,  CheckboxCustomEvent,   } from "@ionic/react"; // IonSpinner, SelectChangeEventDetail
+
+import {  eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline,  } from "ionicons/icons"; // pencilOutline, addOutline, close
 import { PiListNumbers, PiScroll } from "react-icons/pi";
 import { GoHistory } from "react-icons/go";
 import { GrTag, GrCertificate } from "react-icons/gr";
-import { View, Button } from 'react-native';
+/*import { View, Button } from 'react-native';
 import axios from "axios";
 import Cookies from 'universal-cookie';
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";*/
 
 import TopHeader from '../../../components/TopHeader/TopHeader';
 import BottomNavigation from '../../../components/BottomNavs/BottomNavs';
 import './DiamondSearch.css';
-import { IonSpinner } from '@ionic/react';
-import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
+
+//import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
 
   
 const columnNames = [
@@ -33,24 +34,108 @@ const optionsTreatment = [
   "CE", "COL", "CVD", "HPHT", "IRR", "LD", "N", "OT"
 ];
 
+interface FormData {
+  status: string;
+  price: string;
+  from_clarity: string;
+  to_clarity: string;
+  from_depth: string;
+  to_depth: string;
+  from_color: string;
+  to_color: string;
+  from_size: string;
+  to_size: string;
+  from_weight: string;
+  to_weight: string;
+  from_stock: string;
+  to_stock: string;
+  shape: string;
+}
+
+interface DetailItem {
+  title: string;
+  value: string;
+}
+
+interface Clarity {
+  Code: string;
+}
+
+interface Shape {
+  Code: string;
+  Name: string;
+  ShapeDescription: string;
+}
+
+interface Color {
+  Code: string;
+}
+
+interface Product {
+  StoneNumber: string;
+  CertPicture?: string;
+  [key: string]: any; // optional, in case your products have extra fields
+}
+
 
 const DiamondSearch: React.FC = () => {  
   
-  const [formData, setFormData] = useState({});
+  //const [formData, setFormData] = useState({});
   const [archiveStatus, setArchiveStatus] = useState("archive");
   const [selectedTreatments, setSelectedTreatments] = useState<string[]>([]);
   const [selectedCertified, setSelectedCertified] = useState<string>("");
   const [sendCert, setSendCert] = useState<string>("");
   const [network, setNetwork] = useState<string>("");  
-  const [exportStatus, setExportStatus] = useState<string>("");
+  //const [exportStatus, setExportStatus] = useState<string>("");
   const [exportOptions, setExportOptions] = useState<string>("");
   const [batchFtp, setBatchFtp] = useState(false);
   const [append, setAppend] = useState(false);
   const [appendSend, setAppendSend] = useState(false);
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [data] = useState<Product[]>([]);
+  //const [claritydata, setClarityData] = useState<Clarity[]>([]);
+  const [colordata] = useState<Color[]>([]);
+  const [shapedata] = useState<Shape[]>([]);
+
+
+  const claritydata: Clarity[] = [
+    { Code: "VVS1" },
+    { Code: "VVS2" },
+    { Code: "VS1" },
+    { Code: "VS2" },
+  ];
+
+  const [formData, setFormData] = useState<FormData>({ 
+    status: "",
+    price: "",
+    from_clarity: "",
+    to_clarity: "",
+    from_depth: "",
+    to_depth: "",
+    from_color: "",
+    to_color: "",
+    from_size: "",
+    to_size: "",
+    from_weight: "",
+    to_weight: "",
+    from_stock: "",
+    to_stock: "",
+    shape: "",
+  });
+
+  const handleChange = (e: { target: { name: string; value: any } }) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  const handleIonInput = (e: CustomEvent) => {
+    const name = (e.target as HTMLInputElement).name;
+    const value = (e.target as HTMLInputElement).value;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleSubmitnew = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     console.log(formData);
@@ -71,7 +156,7 @@ const DiamondSearch: React.FC = () => {
   };
 
   const resetForm = () => {
-    setFormData('');
+    setFormData(formData);
    
   };
 
@@ -97,8 +182,13 @@ const DiamondSearch: React.FC = () => {
   const modalView = useRef<HTMLIonModalElement>(null);  
   const dismissViewModules = () => modalView.current?.dismiss();
   const [viewDetailsModal, setViewDetailsModal] = useState(false);
-  const [isEditDetailsModal, setIsEditDetailsModal] = useState(false);
-   const [searchDetails, setData_details] = useState([]);
+  const [isEditDetailsModal] = useState(false);
+
+  const [searchDetails] = useState<DetailItem[]>([
+    { title: "Name", value: "John Doe" },
+    { title: "Email", value: "john@example.com" },
+  ]);
+
   /* const searchDetails = [
     { title: "Stone#", value: "10041" },
     { title: "Shape", value: "PR" },
@@ -132,7 +222,7 @@ const DiamondSearch: React.FC = () => {
     { title: "Profit$", value: "-1769.08" },
     { title: "Cert. Comments	", value: "0" },
   ];
- */
+
 
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
   const toggleButton = (label: string) => {
@@ -142,27 +232,27 @@ const DiamondSearch: React.FC = () => {
         : [...prev, label]
         
     );
-    handleChange(event);
+    handleChange({
+      target: {
+        name: "selectedButtons",
+        value: label,
+      },
+    });
   };
   const buttons = ['All', 'Individual Stones', 'Parcel Stones'];
-
-  
-
-  const [shapedata, setData_shape] = useState([]);
-  const [colordata, setData_color] = useState([]);
-  const [claritydata, setData_clarity] = useState([]);
-  const [data, setData] = useState([]);
+ */
+    
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
- const cookies = new Cookies();
+  const [error] = useState("");
+  /*const cookies = new Cookies();
  const account_type = sessionStorage.getItem('account_type');
- const account =account_type?account_type:cookies.get('account_type');
- const [selectedValue, setSelectedValue] = useState('');
- const [otherdata, setDataother] = useState('');
- const handleSelectChange = (event) => {
+  const account =account_type?account_type:cookies.get('account_type');
+ const [selectedValue, setSelectedValue] = useState('');*/
+ const [otherdata] = useState('');
+ /*const handleSelectChange = (event: CustomEvent<SelectChangeEventDetail>) => {
    setSelectedValue(event.detail.value);
    
- };
+ };*/
 
   const  TotalQTY = data.reduce((totalquantity, meal) => totalquantity + parseInt(meal.Qty, 10), 0);
   const  TotalCarat = data.reduce((totalCara, meal) => totalCara + parseInt(meal.Carat, 10), 0);
@@ -178,30 +268,18 @@ const DiamondSearch: React.FC = () => {
   }
   
  
-  const [checkboxValues, setCheckboxValues] = useState({});
+  const [, setCheckboxValues] = useState({});
   const [showAlert, setShowAlert] = useState(false);
-  const [result, setResult] = useState('');
-  const [webViewUrl, setWebViewUrl] = useState('');
+  const [result] = useState('');
+  const [webViewUrl] = useState('');
 
-   const handleCheckboxChange = (e) => {
+   const handleCheckboxChange = (e: CheckboxCustomEvent) => {
         const { name, checked } = e.target;
         setCheckboxValues((prev) => ({ ...prev, [name]: checked }));
     };
 
 const [showModal, setShowModal] = useState(false);
 
-  async function openPdf(pdfUrl: string) {
-  try {
-  const fileOpenerOptions: FileOpenerOptions = {
-    filePath: pdfUrl,
-    contentType: 'application/pdf',
-    openWithDefault: true,
-  };
-  await FileOpener.open(fileOpenerOptions);
-} catch (e) {
-  console.log('Error opening file', e);
-}
-}
   
 
 
@@ -296,7 +374,7 @@ const [showModal, setShowModal] = useState(false);
                         <td >{prod.markup}</td>
                         <td >{prod.margin}</td>
                         <td>{/*<IonIcon icon={pencilOutline} className="action-icon" onClick={() => { setIsEditDetailsModal(true); setViewDetailsModal(true); }} />*/}</td> 
-                      <td><IonIcon icon={eyeOutline} className="action-icon" onClick={() => {openModal(prod.StoneNumber)}} /></td>
+                      <td><IonIcon icon={eyeOutline} className="action-icon" /></td>
                     </tr>
                   ))}
                    </>
@@ -417,8 +495,13 @@ const [showModal, setShowModal] = useState(false);
             <IonItem>
               <div className="select-container">
                 <IonLabel className="tabs-title">Shape</IonLabel>
-                <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="shape" value={formData.shape || ''}
-      onChange={handleChange} multiple={true}>
+                <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="shape"
+                value={formData.shape || ''} multiple={true}
+                onIonChange={(e) =>
+                  handleChange({
+                    target: { name: "from_color", value: e.detail.value }
+                  })
+                }>
                 {shapedata.map(shape => (
                   <IonSelectOption value={shape.Code}>{shape.ShapeDescription}</IonSelectOption>
                 ))}
@@ -439,10 +522,10 @@ const [showModal, setShowModal] = useState(false);
                 <IonRow>
                   <IonCol size="2" className="row-label">Stock#</IonCol>
                   <IonCol size="5">
-                    <IonInput type="text" name="from_stock" value={formData.from_stock || ''} onChange={handleChange}/>
+                    <IonInput type="text" name="from_stock" value={formData.from_stock || ''} onIonInput={handleIonInput} />
                   </IonCol>
                   <IonCol size="5">
-                    <IonInput type="text" name="to_stock" value={formData.to_stock || ''} onChange={handleChange}/>
+                    <IonInput type="text" name="to_stock" value={formData.to_stock || ''} onIonInput={handleIonInput} />
                   </IonCol>
                 </IonRow>
 
@@ -450,10 +533,10 @@ const [showModal, setShowModal] = useState(false);
                 <IonRow>
                   <IonCol size="2" className="row-label">Weight</IonCol>
                   <IonCol size="5">
-                    <IonInput type="number" name="from_weight" value={formData.from_weight || ''} onChange={handleChange}/>
+                    <IonInput type="number" name="from_weight" value={formData.from_weight || ''} onIonInput={handleIonInput} />
                   </IonCol>
                   <IonCol size="5">
-                    <IonInput type="number" name="to_weight" value={formData.to_weight || ''} onChange={handleChange}/>
+                    <IonInput type="number" name="to_weight" value={formData.to_weight || ''} onIonInput={handleIonInput} />
                   </IonCol>
                 </IonRow>
 
@@ -461,10 +544,10 @@ const [showModal, setShowModal] = useState(false);
                 <IonRow>
                   <IonCol size="2" className="row-label">Size</IonCol>
                   <IonCol size="5">
-                    <IonInput type="text" name="from_size" value={formData.from_size || ''} onChange={handleChange}/>
+                    <IonInput type="text" name="from_size" value={formData.from_size || ''} onIonInput={handleIonInput} />
                   </IonCol>
                   <IonCol size="5">
-                    <IonInput type="text" name="to_size" value={formData.to_size || ''} onChange={handleChange}/>
+                    <IonInput type="text" name="to_size" value={formData.to_size || ''}  onIonInput={handleIonInput} />
                   </IonCol>
                 </IonRow>
 
@@ -473,7 +556,11 @@ const [showModal, setShowModal] = useState(false);
                   <IonCol size="2" className="row-label">Color</IonCol>
                   <IonCol size="5">
                   <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="from_color" value={formData.from_color || ''}
-      onChange={handleChange} >
+                  onIonChange={(e) =>
+                    handleChange({
+                      target: { name: "from_color", value: e.detail.value }
+                    })
+                  }>
                 {colordata.map(color => (
                   <IonSelectOption value={color.Code}>{color.Code}</IonSelectOption>
                 ))}
@@ -481,7 +568,11 @@ const [showModal, setShowModal] = useState(false);
                   </IonCol>
                   <IonCol size="5">
                   <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="to_color" value={formData.to_color || ''}
-      onChange={handleChange} >
+                  onIonChange={(e) =>
+                    handleChange({
+                      target: { name: "to_color", value: e.detail.value }
+                    })
+                  }>
                 {colordata.map(color => (
                   <IonSelectOption value={color.Code}>{color.Code}</IonSelectOption>
                 ))}
@@ -494,7 +585,11 @@ const [showModal, setShowModal] = useState(false);
                   <IonCol size="2" className="row-label">Clarity</IonCol>
                   <IonCol size="5">
                   <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="from_clarity" value={formData.from_clarity || ''}
-      onChange={handleChange} >
+                  onIonChange={(e) =>
+                    handleChange({
+                      target: { name: "from_clarity", value: e.detail.value }
+                    })
+                  }>
                 {claritydata.map(clarity => (
                   <IonSelectOption value={clarity.Code}>{clarity.Code}</IonSelectOption>
                 ))}
@@ -502,7 +597,11 @@ const [showModal, setShowModal] = useState(false);
                   </IonCol>
                   <IonCol size="5">
                   <IonSelect placeholder="Select an option" interface="popover" className="rounded-select" name="to_clarity" value={formData.to_clarity || ''}
-      onChange={handleChange} >
+                  onIonChange={(e) =>
+                    handleChange({
+                      target: { name: "to_clarity", value: e.detail.value }
+                    })
+                  }>
                 {claritydata.map(clarity => (
                   <IonSelectOption value={clarity.Code}>{clarity.Code}</IonSelectOption>
                 ))}
@@ -514,10 +613,10 @@ const [showModal, setShowModal] = useState(false);
                 <IonRow>
                   <IonCol size="2" className="row-label">Depth</IonCol>
                   <IonCol size="5">
-                    <IonInput type="number" name="from_depth" value={formData.from_depth || ''} onChange={handleChange}/>
+                    <IonInput type="number" name="from_depth" value={formData.from_depth} onIonInput={handleIonInput} />
                   </IonCol>
                   <IonCol size="5">
-                    <IonInput type="number" name="to_depth" value={formData.to_depth || ''} onChange={handleChange}/>
+                    <IonInput type="number" name="to_depth" value={formData.to_depth} onIonInput={handleIonInput} />
                   </IonCol>
                 </IonRow>
 
@@ -628,8 +727,7 @@ const [showModal, setShowModal] = useState(false);
               <IonRow className="dropdown-row">
                 <IonCol size="6" className="dropdown-col">
                   <IonLabel className="dropdown-label">Price</IonLabel>
-                  <IonSelect placeholder="Select Price" interface="popover" className="corner-select" name="price" value={formData.price || ''}
-      onChange={handleChange}>
+                  <IonSelect placeholder="Select Price" interface="popover" className="corner-select" name="price" value={formData.price} onIonChange={(e) => handleChange({ target: { name: "price", value: e.detail.value } })}>
                     <IonSelectOption value="SellPrice">Price1</IonSelectOption>
                     <IonSelectOption value="SellPrice2">Price2</IonSelectOption>
                     <IonSelectOption value="SellPrice3">Price3</IonSelectOption>
@@ -643,7 +741,8 @@ const [showModal, setShowModal] = useState(false);
                 <IonCol size="6" className="dropdown-col">
                   <IonLabel className="dropdown-label">Status</IonLabel>
                   <IonSelect placeholder="Select Status" interface="popover" className="corner-select" name="status" value={formData.status || ''}
-      onChange={handleChange}>
+       onIonChange={(e) => handleChange({ target: { name: "status", value: e.detail.value } })
+  }>
                     <IonSelectOption value="available">Available</IonSelectOption>
                     <IonSelectOption value="sold">Sold</IonSelectOption>
                     {/* <IonSelectOption value="pending">Pending</IonSelectOption> */}

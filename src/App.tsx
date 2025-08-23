@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
 
-import { Redirect, Route } from "react-router-dom";
-import { IonApp, setupIonicReact } from '@ionic/react'; //IonRouterOutlet, IonContent, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel
+import { Route } from 'react-router-dom'; //Redirect
+import { IonApp, setupIonicReact, IonRouterOutlet } from '@ionic/react'; //, IonContent, IonSplitPane, IonMenu, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel
 
 import { IonReactRouter } from '@ionic/react-router';
 import { Preferences } from "@capacitor/preferences";
-import { Keyboard } from '@capacitor/keyboard';
+
+// import { Capacitor } from "@capacitor/core";
+// import { Keyboard } from "@capacitor/keyboard";
 
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import Login from './pages/Login/Login';
-import Home from './pages/Login/home';
 import Dashboard from './pages/Dashboard/Dashboard';
 import DiamondEntry from './pages/Diamond/DiamondEntry/DiamondEntry';
 import DiamondSearch from './pages/Diamond/DiamondSearch/DiamondSearch';
@@ -20,7 +21,7 @@ import GemSearch from './pages/Gem/GemSearch/GemSearch';
 import WatchEntry from './pages/Watch/WatchEntry/WatchEntry';
 import WatchSearch from './pages/Watch/WatchSearch/WatchSearch';
 
-import Cookies from 'universal-cookie';
+//import Cookies from 'universal-cookie';
 //import { CategoryProvider } from './data/categoriesData';
 
 /* Core CSS required for Ionic components to work properly */
@@ -57,31 +58,32 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+
+
 const App: React.FC = () => { 
 
   //const path = window.location.pathname;
   const [showSplash, setShowSplash] = useState(true);
+
+  /*if (Capacitor.getPlatform() !== "web") {
+    Keyboard.setScroll({ isDisabled: false });
+  }*/
   
   //React Functional Component
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  /*const [, setIsLoggedIn] = React.useState(false);
   const cookies = new Cookies();
-  const storedLoginStatusNew1 = sessionStorage.getItem('login_id');
-    const storedLoginStatus1 = storedLoginStatusNew1?storedLoginStatusNew1:cookies.get('login_id');
+  //const storedLoginStatusNew1 = sessionStorage.getItem('login_id');
+    //const storedLoginStatus1 = storedLoginStatusNew1?storedLoginStatusNew1:cookies.get('login_id');*/
   useEffect(() => {
-    const storedLoginStatusNew = sessionStorage.getItem('login_id');
+    /*const storedLoginStatusNew = sessionStorage.getItem('login_id');
     const storedLoginStatus = storedLoginStatusNew?storedLoginStatusNew:cookies.get('login_id');
     if (storedLoginStatus === '1') {
       setIsLoggedIn(true);
-    }
+    }*/
     Preferences.set({ key: "darkMode", value: "false" }).then(() => {
       console.log("Dark mode preference saved!");
     });
     
-  }, []);
-
-  useEffect(() => {
-    // Enable scroll when keyboard opens, globally
-    Keyboard.setScroll({ isDisabled: false });
   }, []);
   
 
@@ -93,6 +95,7 @@ const App: React.FC = () => {
       ) : (             
 
         <IonReactRouter>
+          <IonRouterOutlet>
 
           {/*<Route exact path="/">
             {storedLoginStatus1 ? <Redirect to="/dashboard" /> : ''  }
@@ -103,7 +106,8 @@ const App: React.FC = () => {
           </Route>
           */}
 
-          <Route path="/" exact component={Login} />           
+          <Route path="/" exact component={Login} />  
+          {/*<Redirect exact from="*" to="/" />*/}
 
           <Route path="/dashboard" component={Dashboard} />
           
@@ -118,6 +122,8 @@ const App: React.FC = () => {
 
           <Route path="/watchEntry" component={WatchEntry} />
           <Route path="/watchSearch" component={WatchSearch} />
+
+          </IonRouterOutlet>
 
         </IonReactRouter>
 

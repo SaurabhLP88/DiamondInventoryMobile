@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText, IonIcon } from '@ionic/react';
+import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText} from '@ionic/react'; //IonIcon
 import LoginContainer from "../../components/LoginContainer/LoginContainer";
 import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVerification";
 import HomeContainer from "../../components/LoginContainer/HomeContainer";

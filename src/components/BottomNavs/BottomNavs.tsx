@@ -9,7 +9,6 @@ interface TabItem {
     href: string;
     icon: ReactElement;
     label: string;
-    clickname:string;
 }
 
 interface BottomTabsProps {
@@ -23,7 +22,7 @@ const BottomNavigation: React.FC<BottomTabsProps> = ({ tabs, className = "" }) =
 
     <IonTabBar className={`fixed-tabs ${className}`} slot="bottom">
         {tabs.map((item) => (
-        <IonTabButton key={item.tab} tab={item.tab}  onClick={item.clickname}>
+        <IonTabButton key={item.tab} tab={item.tab} href={item.href}>
             {item.icon}
             <IonLabel>{item.label}</IonLabel>
         </IonTabButton>

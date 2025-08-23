@@ -1,7 +1,7 @@
 
 import { useRef, useState } from "react";
 import { IonPage, IonContent, IonButton, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonGrid, IonSelect, IonSelectOption, IonInput, IonPopover, IonDatetime, IonRadio  } from '@ionic/react';
-import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, addOutline, close, calendarOutline } from "ionicons/icons";
+import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, calendarOutline } from "ionicons/icons"; //addOutline, close,
 import { PiListNumbers, PiScroll } from "react-icons/pi";
 import { GoHistory } from "react-icons/go";
 import { GrTag, GrCertificate } from "react-icons/gr";
@@ -14,7 +14,7 @@ const columnNames = [
   "SKU#", "Style", "Vendor Style", "Qty", "Group", "Category", "Metal", "Description", "On Memo", "Sell $", "Partnership"
 ];
 
-const optionsDefault = [
+/*const optionsDefault = [
   "On-Hand", "On-Memo", "Sold", "Mounted", "Committed", "Memo-in", "Matching", "No Memo-In"
 ];
 const optionsCertified = [
@@ -22,7 +22,7 @@ const optionsCertified = [
 ];
 const optionsTreatment = [
   "CE", "COL", "CVD", "HPHT", "IRR", "LD", "N", "OT"
-];
+];*/
 
 
 const WatchSearch: React.FC = () => {
@@ -45,9 +45,10 @@ const WatchSearch: React.FC = () => {
   const dismissModules = () => modalFilter.current?.dismiss();
   const [filterShowModal, filterSetShowModal] = useState(false);
 
-  const [activeTab, setActiveTab] = useState('tab1');
+  /*const [activeTab, setActiveTab] = useState('tab1');
 
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
+  
   const toggleButton = (label: string) => {
     setSelectedButtons((prev) =>
       prev.includes(label)
@@ -55,7 +56,7 @@ const WatchSearch: React.FC = () => {
         : [...prev, label]
     );
   };
-  const buttons = ['All', 'Individual Stones', 'Parcel Stones'];
+  const buttons = ['All', 'Individual Stones', 'Parcel Stones'];*/
 
   const watchSearchTabs = [
     { tab: "home", href: "/home", icon: <PiListNumbers className="icon" />, label: "Num. All" },

@@ -1,7 +1,7 @@
 
 import { useRef, useState } from "react";
-import { IonPage, IonContent, IonButton, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonGrid, IonSelect, IonSelectOption, IonInput, IonPopover, IonDatetime, IonRadio, IonSegment, IonSegmentButton  } from '@ionic/react';
-import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, addOutline, close, calendarOutline } from "ionicons/icons";
+import { IonPage, IonContent, IonButton, IonIcon, IonCheckbox, IonCol, IonRow, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonLabel, IonItemDivider, IonGrid, IonSelect, IonSelectOption, IonInput,  IonRadio, IonSegment, IonSegmentButton  } from '@ionic/react'; //IonPopover, IonDatetime,
+import { pencilOutline, eyeOutline, chevronBack, chevronForward, optionsOutline, closeOutline, } from "ionicons/icons"; //addOutline, close, calendarOutline
 import { PiListNumbers, PiScroll } from "react-icons/pi";
 import { GoHistory } from "react-icons/go";
 import { GrTag, GrCertificate } from "react-icons/gr";
@@ -36,7 +36,7 @@ const GemSearch: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState('tab1');
 
-  const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
+  /*const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
   const toggleButton = (label: string) => {
     setSelectedButtons((prev) =>
       prev.includes(label)
@@ -44,7 +44,7 @@ const GemSearch: React.FC = () => {
         : [...prev, label]
     );
   };
-  const buttons = ['All', 'Individual Stones', 'Parcel Stones'];
+  const buttons = ['All', 'Individual Stones', 'Parcel Stones'];*/
 
   const jewelSearchTabs = [
     { tab: "home", href: "/home", icon: <PiListNumbers className="icon" />, label: "Num. All" },
@@ -54,11 +54,11 @@ const GemSearch: React.FC = () => {
     { tab: "profile", href: "/profile", icon: <GrCertificate className="icon" />, label: "Print Cert." }
   ];
 
-  const [selectedDateFrom, setSelectedDateFrom] = useState('');
+  /*const [selectedDateFrom, setSelectedDateFrom] = useState('');
   const [showCalendarFrom, setShowCalendarFrom] = useState(false);
 
   const [selectedDateTo, setSelectedDateTo] = useState('');
-  const [showCalendarTo, setShowCalendarTo] = useState(false);
+  const [showCalendarTo, setShowCalendarTo] = useState(false);*/
 
   return (
     <IonPage className="gem-search bg-gradient">

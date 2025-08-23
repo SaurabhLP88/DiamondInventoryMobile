@@ -2,7 +2,7 @@ import { useState} from "react";
 //import { Redirect, Route } from 'react-router-dom';
 import { IonContent, IonFooter, IonPage, IonRouterLink, IonToolbar, IonImg, IonText } from '@ionic/react';
 import HomeContainer from "../../components/LoginContainer/HomeContainer";
-import LoginContainer from "../../components/LoginContainer/LoginContainer";
+//import LoginContainer from "../../components/LoginContainer/LoginContainer";
 //import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVerification";
 //import Dashboard from '../../pages/Dashboard/Dashboard';
 import './Login.css';
@@ -29,18 +29,18 @@ const Home: React.FC = () => {
         </div>
 
         <div id="login-container" className="ion-padding">
-          <HomeContainer onAccountSuccess={() => setShowVerification(true)} /> 
-          {/* 
-          {!newstoredseesionid ? (
+          
+          
+          {showVerification ? (
             <>
                <HomeContainer onAccountSuccess={() => setShowVerification(true)} /> 
             </>
           ) : (
             <>
-             <LoginContainer onLoginSuccess={() => setShowVerification(true)}  />
+             {/*<LoginContainer onLoginSuccess={() => setShowVerification(true)}  />*/}
             </>
           )}
-          */}
+          
 
         </div>
       </IonContent>

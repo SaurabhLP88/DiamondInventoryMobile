@@ -8,7 +8,7 @@ interface ContainerProps {
 
 const HomeContainer: React.FC<ContainerProps> = ({ onAccountSuccess }) => {
 
-  const [accountName, setAccountName] = useState("");  
+  // const [accountName, setAccountName] = useState("");  
   const [error, setError] = useState("");
   const correctAccount = "ftp";
 
