@@ -5,6 +5,7 @@ import TwoStepVerification from "../../components/TwoStepVerification/TwoStepVer
 import HomeContainer from "../../components/LoginContainer/HomeContainer";
 import './Login.css';
 import { useHistory } from "react-router-dom";
+import logo from "@/assets/images/calcdiamond-01.svg";
 
 const Login: React.FC = () => {
  
@@ -19,7 +20,7 @@ const Login: React.FC = () => {
         <div className="ion-padding">
           {/* Logo */}
           <div className="logo-container">
-            <IonImg src="./src/assets/images/calcdiamond-01.svg" alt="CalcDiamond" className="logo" />
+            <IonImg src={logo} alt="CalcDiamond" className="logo" />
           </div>
 
           {/* Welcome Text */}

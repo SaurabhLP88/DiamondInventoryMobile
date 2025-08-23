@@ -44,37 +44,37 @@ const Dashboard: React.FC = () => {
     {
       key: "diamonds",
       label: "Diamonds",
-      icon: "assets/images/diamond1.svg",
+      icon: "/assets/images/diamond1.svg",
       subCategories: [
-        { label: "Diamond Entry", icon: "assets/images/diamond1.svg", path: '/diamondEntry' },
-        { label: "Diamond Search", icon: "assets/images/diamond1.svg", path: '/diamondSearch' },
+        { label: "Diamond Entry", icon: "/assets/images/diamond1.svg", path: '/diamondEntry' },
+        { label: "Diamond Search", icon: "/assets/images/diamond1.svg", path: '/diamondSearch' },
       ],
     },
     {
       key: "gems",
       label: "Gems",
-      icon: "assets/images/gem1.svg",
+      icon: "/assets/images/gem1.svg",
       subCategories: [
-        { label: "Gem Entry", icon: "assets/images/gem1.svg", path: '/gemEntry' },
-        { label: "Gem Search", icon: "assets/images/gem1.svg", path: '/gemSearch' },
+        { label: "Gem Entry", icon: "/assets/images/gem1.svg", path: '/gemEntry' },
+        { label: "Gem Search", icon: "/assets/images/gem1.svg", path: '/gemSearch' },
       ],
     },
     {
       key: "jewelry",
       label: "Jewelry",
-      icon: "assets/images/jewelry1.svg",
+      icon: "/assets/images/jewelry1.svg",
       subCategories: [
-        { label: "Jewel Entry", icon: "assets/images/jewelry1.svg", path: '/jewelEntry' },
-        { label: "Jewel Search", icon: "assets/images/jewelry1.svg", path: '/jewelSearch' },
+        { label: "Jewel Entry", icon: "/assets/images/jewelry1.svg", path: '/jewelEntry' },
+        { label: "Jewel Search", icon: "/assets/images/jewelry1.svg", path: '/jewelSearch' },
       ],
     },
     {
       key: "watches",
       label: "Watches",
-      icon: "assets/images/watch1.svg",
+      icon: "/assets/images/watch1.svg",
       subCategories: [
-        { label: "Watch Entry", icon: "assets/images/watch1.svg", path: '/watchEntry' },
-        { label: "Watch Search", icon: "assets/images/watch1.svg", path: '/watchSearch' },
+        { label: "Watch Entry", icon: "/assets/images/watch1.svg", path: '/watchEntry' },
+        { label: "Watch Search", icon: "/assets/images/watch1.svg", path: '/watchSearch' },
       ],
     },
   ];
@@ -102,22 +102,22 @@ const Dashboard: React.FC = () => {
           {/*<IonGrid className="no-padding">
             <IonRow className="inventory-icons">
               <IonCol className="inventory-item">
-                <div className="icon-box"><IonImg src="assets/images/diamond1.svg" alt="Diamonds" className="icon" /></div>
+                <div className="icon-box"><IonImg src="/assets/images/diamond1.svg" alt="Diamonds" className="icon" /></div>
                 <IonLabel>Diamonds</IonLabel>
               </IonCol>
 
               <IonCol className="inventory-item">
-                <div className="icon-box"><IonImg src="assets/images/gem1.svg" alt="Gems" className="icon" /></div>
+                <div className="icon-box"><IonImg src="/assets/images/gem1.svg" alt="Gems" className="icon" /></div>
                 <IonLabel>Gems</IonLabel>
               </IonCol>
 
               <IonCol className="inventory-item">
-                <div className="icon-box"><IonImg src="assets/images/jewelry1.svg" alt="Jewelry" className="icon" /></div>
+                <div className="icon-box"><IonImg src="/assets/images/jewelry1.svg" alt="Jewelry" className="icon" /></div>
                 <IonLabel>Jewelry</IonLabel>
               </IonCol>
 
               <IonCol className="inventory-item">
-                <div className="icon-box"><IonImg src="assets/images/watch1.svg" alt="Watches" className="icon" /></div>
+                <div className="icon-box"><IonImg src="/assets/images/watch1.svg" alt="Watches" className="icon" /></div>
                 <IonLabel>Watches</IonLabel>
               </IonCol>
             </IonRow>
@@ -173,22 +173,22 @@ const Dashboard: React.FC = () => {
               <IonGrid className="no-padding">
                 <IonRow className="inventory-icons">
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/quote1.svg" alt="Quotes" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/quote1.svg" alt="Quotes" className="icon" /></div>
                     <IonLabel>Quotes</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/memo1.svg" alt="Memos" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/memo1.svg" alt="Memos" className="icon" /></div>
                     <IonLabel>Memos</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/invoice1.svg" alt="Invoices" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/invoice1.svg" alt="Invoices" className="icon" /></div>
                     <IonLabel>Invoices</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/payments1.svg" alt="Payments" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/payments1.svg" alt="Payments" className="icon" /></div>
                     <IonLabel>Payments</IonLabel>
                   </IonCol>
                 </IonRow>
@@ -206,22 +206,22 @@ const Dashboard: React.FC = () => {
               <IonGrid className="no-padding">
                 <IonRow className="inventory-icons">
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/memo12.svg" alt="Memo In" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/memo12.svg" alt="Memo In" className="icon" /></div>
                     <IonLabel>Memo In</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/receiving1.svg" alt="Receive In" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/receiving1.svg" alt="Receive In" className="icon" /></div>
                     <IonLabel>Receive In</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/expenses1.svg" alt="Expenses" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/expenses1.svg" alt="Expenses" className="icon" /></div>
                     <IonLabel>Expenses</IonLabel>
                   </IonCol>
 
                   <IonCol className="inventory-item">
-                    <div className="icon-box"><IonImg src="assets/images/bank_register1.svg" alt="Bank Register" className="icon" /></div>
+                    <div className="icon-box"><IonImg src="/assets/images/bank_register1.svg" alt="Bank Register" className="icon" /></div>
                     <IonLabel>Bank Register</IonLabel>
                   </IonCol>
                 </IonRow>

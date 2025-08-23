@@ -3,6 +3,7 @@ import { IonImg,  IonItem, IonInput, IonButton, IonText, IonIcon } from '@ionic/
 import './LoginContainer.css';
 //import { useHistory } from "react-router-dom";
 import { eye, eyeOff } from 'ionicons/icons';
+import logo from "@/assets/images/egl_usa.jpg";
 // 
 
 interface ContainerProps { 
@@ -52,7 +53,7 @@ const LoginContainer: React.FC<ContainerProps> = ({ onLoginSuccess, onBack }) =>
     <div id="access-container">
 
       <div className="logo-client-container">
-        <IonImg src="/src/assets/images/client_logo.svg" alt="Client Logo" className="logo-client" />
+        <IonImg src={logo} alt="Client Logo" className="logo-client" />
       </div>
 
       <h1 className="login-heading">Access Your Account</h1>
