@@ -94,7 +94,7 @@ const App: React.FC = () => {
         <SplashScreen onFinish={() => setShowSplash(false)} />
       ) : (             
 
-        <IonReactRouter>
+        <IonReactRouter basename="/DiamondInventoryMobile">
           <IonRouterOutlet>
 
           {/*<Route exact path="/">
@@ -106,11 +106,7 @@ const App: React.FC = () => {
           </Route>
           */}
 
-          <Route path="/" exact 
-          component={() => {
-        console.log("Login route triggered");
-        return <Login />;
-      }}  />  
+          <Route path="/" exact component={Login} />  
           {/*<Redirect exact from="*" to="/" />*/}
 
           <Route path="/dashboard" component={Dashboard} />
